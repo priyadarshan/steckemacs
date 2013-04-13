@@ -211,7 +211,8 @@
 (global-set-key (kbd "C-c i") (lambda () (interactive) ;indent the whole the buffer
                           (indent-region (point-min) (point-max))))
 (global-set-key (kbd "C-c j") 'join-line)
-(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "M-p") 'backward-sexp)
 (global-set-key (kbd "M-n") 'forward-sexp)
 (global-set-key (kbd "M-i") 'er/expand-region)
@@ -255,10 +256,10 @@
 (global-set-key (kbd "C-S-8") (lambda () (interactive) (other-frame 1)))
 
 ;; buffer-move
-(global-set-key (kbd "<up>")    'buf-move-up)
-(global-set-key (kbd "<down>")  'buf-move-down)
-(global-set-key (kbd "<left>")  'buf-move-left)
-(global-set-key (kbd "<right>") 'buf-move-right)
+(global-set-key (kbd "<M-up>")    'buf-move-up)
+(global-set-key (kbd "<M-down>")  'buf-move-down)
+(global-set-key (kbd "<M-left>")  'buf-move-left)
+(global-set-key (kbd "<M-right>") 'buf-move-right)
 
 ;; copy filename of current buffer to kill ring
 (defun show-file-name ()
@@ -809,7 +810,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (key-chord-define-global "vr" 'vr/replace)
 (key-chord-define-global "sb" 'speedbar)
 ;; region
-(key-chord-define-global "rv" 'er/expand-region)
 (key-chord-define-global "ac" 'align-current)
 ;; google
 (key-chord-define-global "gt" 'google-this)
