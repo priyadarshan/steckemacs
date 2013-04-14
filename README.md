@@ -26,7 +26,7 @@ By using the `key-chord` mode we can avoid having to type C- or M- all the time.
 
 When I write `fg` as a key combo it means you would have to press `f` and `g` at the same time.
 
-I only describe my custom key combinations currently. To learn the standard Emacs commands, 
+I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial `C-h t`, use `C-S-h` or `M-x` to see/filter the available commands/shortcuts.
 
 **the list is not complete yet, work in progress**
 
