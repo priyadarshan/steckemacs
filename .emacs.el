@@ -124,6 +124,7 @@
             dired+
             erc-hl-nicks
             expand-region
+            fic-ext-mode
             flycheck
             geben
             gist
@@ -412,6 +413,8 @@ Call a second time to restore the original window configuration."
 
 ;; show whitespace errors in programming modes
 (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
+;; highlight TODO/FIXME/...
+(add-hook 'prog-mode-hook 'fic-ext-mode)
 
 ;(defun yes-or-no-p (&rest ignored) t)    ;turn off most confirmations
 (defalias 'yes-or-no-p 'y-or-n-p)
