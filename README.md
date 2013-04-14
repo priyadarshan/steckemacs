@@ -2,7 +2,7 @@
 
 To use this setup it's best you have Emacs 24 or later. Older versions might not work properly.
 
-Most importantly this setup pulls in a lot of packages via ELPA as described in my blog: http://postmomentum.ch/blog/201304/steckemacs.creole
+Most importantly this setup pulls in a lot of packages via ELPA as described in my blog: http://postmomentum.ch/blog/201304/steckemacs
 
 ## Installation
 
