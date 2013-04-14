@@ -784,8 +784,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay 0.03)
 ;; navigation
-(key-chord-define-global "io" 'next-line)
-(key-chord-define-global "we" 'previous-line)
 (key-chord-define-global "sd" 'move-beginning-of-line)
 (key-chord-define-global "kl" 'move-end-of-line)
 (key-chord-define-global "wf" 'forward-word)
@@ -809,6 +807,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (key-chord-define-global "cd" (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))))
 (key-chord-define-global "vr" 'vr/replace)
 (key-chord-define-global "sb" 'speedbar)
+(key-chord-define-global "34" 'helm-imenu)
 ;; region
 (key-chord-define-global "ac" 'align-current)
 ;; google
@@ -827,6 +826,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (key-chord-define-global "jl" 'split-window-vertically)
 (key-chord-define-global ",." 'delete-frame)
 ;; modes
+(key-chord-define-global "90" 'overwrite-mode)
 (key-chord-define-global "nm" 'mu4e)
 (key-chord-define-global "fc" 'flycheck-mode)
 (key-chord-define-global "ln" 'linum-mode)
