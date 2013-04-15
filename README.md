@@ -71,6 +71,9 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `M-I`     | select stuff inside "pairs" e.g. inside ()
                            | `C->`     | add cursor downwards (try to get next occurrence if sth. is marked)
                            | `C-<`     | add cursor upwards (try to get previous occurrence if sth. is marked)
+**Undo/Redo**              | `C-/`     | Undo
+                           | `C-.`     | Redo
+                           | `C-,`     | Visualize undo/redo tree
 **Formatting**             | `C-c w`   | cleanup whitespace
                            | `C-c j`   | join two lines
                            | `90`      | toggle `INSERT` (overwrite-mode)

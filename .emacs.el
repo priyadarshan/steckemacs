@@ -949,6 +949,11 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; tempo
 (require 'tempo nil t)
 
+;; undo-tree
+(global-undo-tree-mode 1)
+(global-set-key (kbd "C-.") 'undo-tree-redo)
+(global-set-key (kbd "C-,") 'undo-tree-visualize)
+
 ;; uniqify
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
