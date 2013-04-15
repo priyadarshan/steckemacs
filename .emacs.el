@@ -5,7 +5,6 @@
 ;; Author: steckerhalter
 ;; Keywords: emacs configuration init
 ;; URL: https://github.com/steckerhalter/steckemacs
-;; Version: 0.0.1
 
 ;; This file is not part of GNU Emacs.
 
