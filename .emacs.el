@@ -654,11 +654,11 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; highlight-symbol
 (setq highlight-symbol-on-navigation-p t)
-(setq highlight-symbol-idle-delay 0)
+(setq highlight-symbol-idle-delay 0.2)
 (global-set-key (kbd "C-2") 'highlight-symbol-occur)
 (global-set-key (kbd "C-3") (lambda () (interactive) (highlight-symbol-jump -1)))
 (global-set-key (kbd "C-5") (lambda () (interactive) (highlight-symbol-jump 1)))
-(highlight-symbol-mode 1)
+(add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
 ;; isearch+
 (eval-after-load "isearch" '(require 'isearch+))
@@ -953,6 +953,10 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-undo-tree-mode 1)
 (global-set-key (kbd "C-.") 'undo-tree-redo)
 (global-set-key (kbd "C-,") 'undo-tree-visualize)
+(setq undo-tree-auto-save-history t)
+(setq undo-tree-visualizer-diff t)
+(setq undo-tree-visualizer-timestamps t)
+
 
 ;; uniqify
 (require 'uniquify)
