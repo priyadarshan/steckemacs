@@ -251,7 +251,6 @@
 (global-set-key (kbd "<C-up>") 'shrink-window-horizontally)
 (global-set-key (kbd "<C-down>") 'enlarge-window-horizontally)
 
-(global-set-key (kbd "C-4") 'delete-frame)
 (global-set-key (kbd "C-8") (lambda () (interactive) (other-frame -1)))
 (global-set-key (kbd "C-S-8") (lambda () (interactive) (other-frame 1)))
 
@@ -657,7 +656,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq highlight-symbol-idle-delay 0.2)
 (global-set-key (kbd "C-2") 'highlight-symbol-occur)
 (global-set-key (kbd "C-3") (lambda () (interactive) (highlight-symbol-jump -1)))
-(global-set-key (kbd "C-5") (lambda () (interactive) (highlight-symbol-jump 1)))
+(global-set-key (kbd "C-4") (lambda () (interactive) (highlight-symbol-jump 1)))
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
 ;; isearch+
@@ -951,10 +950,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; undo-tree
 (global-undo-tree-mode 1)
-(global-set-key (kbd "C-.") 'undo-tree-redo)
+(global-set-key (kbd "C-'") 'undo-tree-redo)
 (global-set-key (kbd "C-,") 'undo-tree-visualize)
-(setq undo-tree-auto-save-history t)
-(setq undo-tree-visualizer-diff t)
+(global-set-key (kbd "C-\"") 'undo-tree-visualize)
 (setq undo-tree-visualizer-timestamps t)
 
 

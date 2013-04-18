@@ -60,19 +60,19 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `M-down`  | move buffer to window below
                            | `M-left`  | move buffer to left window
                            | `M-right` | move buffer to right window 
-                           | `C-4`     | Delete the current frame
+                           | `,.`      | Delete the current frame
 **Movement / Selections**  | `M-p`     | move to next expression
                            | `M-n`     | move to previous expression
                            | `C-2`     | show all symbols like the one cursor is located at
                            | `C-3`     | previous symbol like the one the cursor is on
-                           | `C-5`     | next symbol like the one the cursor is on
+                           | `C-4`     | next symbol like the one the cursor is on
                            | `M-i`     | select symbol under cursor, pressing again will smartly expand the region
                            | `M-o`     | narrow the selection again
                            | `M-I`     | select stuff inside "pairs" e.g. inside ()
                            | `C->`     | add cursor downwards (try to get next occurrence if sth. is marked)
                            | `C-<`     | add cursor upwards (try to get previous occurrence if sth. is marked)
 **Undo/Redo**              | `C-/`     | Undo
-                           | `C-.`     | Redo
+                           | `C-'`     | Redo
                            | `C-,`     | Visualize undo/redo tree
 **Formatting**             | `C-c w`   | cleanup whitespace
                            | `C-c j`   | join two lines
