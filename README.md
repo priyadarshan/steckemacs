@@ -66,6 +66,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `C-2`     | show all symbols like the one cursor is located at
                            | `C-3`     | previous symbol like the one the cursor is on
                            | `C-4`     | next symbol like the one the cursor is on
+                           | `i9`      | toggle automatic identation
                            | `M-i`     | select symbol under cursor, pressing again will smartly expand the region
                            | `M-o`     | narrow the selection again
                            | `M-I`     | select stuff inside "pairs" e.g. inside ()
@@ -74,10 +75,10 @@ I only describe my custom key combinations currently. To learn the standard Emac
 **Undo/Redo**              | `C-/`     | Undo
                            | `C-'`     | Redo
                            | `C-,`     | Visualize undo/redo tree
+**Completion**             | `C-;`     | Trigger auto-completion explicitly (with fuzzy matching)
 **Formatting**             | `C-c w`   | cleanup whitespace
                            | `C-c j`   | join two lines
                            | `90`      | toggle `INSERT` (overwrite-mode)
-                           | `i9`      | toggle automatic identation
                            | `ac`      | align expressions, e.g. align all `=` in 3 lines with assignments
 **Searching / Grepping**   | `34`      | find definitions (functions, headings etc.) in current file
                            | `gt`      | google selection / word under cursor (in web browser)

@@ -157,6 +157,7 @@
             php-mode
             popup
             rainbow-mode
+            robe
             restclient
             session
             slime-js
@@ -509,10 +510,12 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
-(setq ac-auto-show-menu 0.6)            ;300ms delay until selection menu is shown
-(setq ac-use-fuzzy t)                   ;fuzzy matching
 (setq ac-quick-help-height 40)
 (setq ac-quick-help-delay 0.75)
+(setq ac-use-fuzzy t)
+(setq ac-disable-faces nil)
+(setq ac-use-menu-map t)
+(global-set-key (kbd "C-;") 'auto-complete)
 
 ;; calfw
 (require 'calfw-ical)
@@ -908,16 +911,11 @@ Dmitriy Igrishin's patched version of comint.el."
   (add-hook hook 'rainbow-mode)
   )
 
-;; rsense (ruby completion)
-(when (file-exists-p "~/bin/rsense")
-  (setq rsense-home "~/bin/rsense")
-  (add-to-list 'load-path (concat rsense-home "/etc"))
-  (require 'rsense)
-  (add-hook 'ruby-mode-hook
-            (lambda ()
-              (add-to-list 'ac-sources 'ac-source-rsense-method)
-              (add-to-list 'ac-sources 'ac-source-rsense-constant)))
-  )
+;; robe
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (robe-mode 1)
+            (push 'ac-source-robe ac-sources)))
 
 ;; session
 ;; (add-hook 'after-init-hook 'session-initialize)
