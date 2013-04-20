@@ -1,8 +1,10 @@
-# Steckemacs - Steckerhalter's Emacs Configuration
+# Steckemacs
 
-To use this setup please use Emacs 24 or later. Older versions might not work properly.
+An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file and not as many others to split the it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
-Most importantly this setup pulls in a lot of packages via ELPA as described in my blog: http://postmomentum.ch/blog/201304/steckemacs
+If you want to know more about how that works, read my blog entry here:  http://postmomentum.ch/blog/201304/steckemacs
+
+**To use this setup please use Emacs 24 or later. Older versions might not work properly.**
 
 ## Installation
 
