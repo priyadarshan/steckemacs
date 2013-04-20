@@ -1,5 +1,7 @@
 ;;; .emacs.el --- steckemacs
 
+;; * header
+
 ;; Copyright 2013, Steckerhalter
 
 ;; Author: steckerhalter
@@ -38,7 +40,7 @@
 
 (setq emacs<24 (if (< emacs-major-version 24) t nil))
 
-;; load-path ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * load-path
 
 ;; http://emacswiki.org/emacs/LoadPath
 (let ((default-directory "~/.emacs.d/elisp/"))
@@ -52,7 +54,7 @@
             (normal-top-level-add-subdirs-to-load-path)))
          load-path)))
 
-;; el-get ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * el-get
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (setq el-get-install-skip-emacswiki-recipes t)
@@ -98,7 +100,7 @@
 
 (el-get 'sync my-el-get-packages)
 
-;; package.el ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * package.el
 
 (when (fboundp 'package-initialize)
   (when (require 'cl nil t)
@@ -157,6 +159,8 @@
             multiple-cursors
             nav
             org
+            outline-magic
+            outlined-elisp-mode
             php-eldoc
             php-mode
             popup
@@ -199,13 +203,13 @@
 
   )
 
-;; key bindings (mode specific bindings are defined with the mode's settings) ;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * key bindings (mode specific bindings are defined further below with the modes)
 
-;; key-chord
+;; ** key-chord
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay 0.03)
 
-;; general
+;; ** general
 (global-set-key (kbd "C-c X") (lambda () (interactive) (shell-command "pkill emacs")))
 (global-set-key (kbd "C-c s") 'shell)
 (key-chord-define-global "cd" (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))))
@@ -214,13 +218,13 @@
 (global-set-key (kbd "C-c d")  'ispell-change-dictionary)
 (global-set-key (kbd "C-c l")  (lambda () (interactive) (load "~/.emacs"))) ;reload .emacs
 (key-chord-define-global "cg" 'customize-group)
-;; appearance
+;; ** appearance
 (global-set-key (kbd "C-c m") 'menu-bar-mode)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (key-chord-define-global "ln" 'linum-mode)
 
-;; buffer / file
+;; ** buffer / file
 (global-set-key (kbd "C-c r")  'revert-buffer)
 (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)   ;use ido to switch buffers
 (global-set-key (kbd "<f6>") (lambda () (interactive) (kill-buffer (buffer-name)))) ;kill current buffer
@@ -234,7 +238,7 @@
 (key-chord-define-global "eb" 'eval-buffer)
 (key-chord-define-global "sv" 'save-buffer)
 
-;; window / frame
+;; ** window / frame
 (global-set-key (kbd "C-0") (lambda () (interactive) (select-window (previous-window)))) ;select prev window
 (global-set-key (kbd "C-9") (lambda () (interactive) (select-window (next-window))))     ;select next window
 (key-chord-define-global "ef" (lambda () (interactive) (select-window (previous-window))))
@@ -257,7 +261,7 @@
 (key-chord-define-global "jl" 'split-window-vertically)
 (key-chord-define-global ",." 'delete-frame)
 
-;; movement / selections
+;; ** movement / selections
 (global-set-key (kbd "M-p") 'backward-sexp)
 (global-set-key (kbd "M-n") 'forward-sexp)
 (global-set-key (kbd "M-i") 'er/expand-region)
@@ -271,7 +275,7 @@
 (key-chord-define-global "i9" 'electric-indent-mode)
 (global-set-key (kbd "M-W" ) 'delete-region)  ;delete region (but don't put it into kill ring)
 
-;; formatting
+;; ** formatting
 (global-set-key (kbd "C-c w") 'whitespace-cleanup)     ;cleanup whitespaces
 (global-set-key (kbd "C-c i") (lambda () (interactive) ;indent the whole the buffer
                           (indent-region (point-min) (point-max))))
@@ -282,15 +286,15 @@
 (key-chord-define-global "90" 'overwrite-mode)
 (global-set-key (kbd "C-c q") 'auto-fill-mode) ;toggles word wrap
 
-;; searching / grepping
+;; ** searching / grepping
 (key-chord-define-global "vg" 'vc-git-grep)
 (key-chord-define-global "fg" 'grep-find)
 (global-set-key (kbd "C-c o") 'occur) ;list matching regexp
 
-;; my keymap to override problematic bindings
+;; ** my keymap to override problematic bindings
 (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 
-;; general options ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * general options
 
 ;; load the secrets if available
 (when (file-readable-p "~/.secrets.el") (load "~/.secrets.el"))
@@ -354,21 +358,21 @@
  '(send-mail-function (quote sendmail-send-it)))
  ;; '(session-use-package t nil (session)))
 
-;; system specific settings
+;; ** system specific settings
 (when (eq system-type 'gnu/linux)
   (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t) ;activate coloring
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)   ;for the shell
   (setq x-select-enable-clipboard t)                           ;enable copy/paste from emacs to other apps
   )
 
-;; theme / colors ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * theme / colors
 
 (load-theme 'grandshell t)
 
 (custom-set-faces
  '(default ((t (:background "black" :foreground "#babdb6" :family "Bitstream Vera Sans Mono" :height 89)))))
 
-;; custom functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * custom functions
 
 ;; copy filename of current buffer to kill ring
 (defun show-file-name ()
@@ -440,20 +444,24 @@ Call a second time to restore the original window configuration."
     (interactive)
     (unless query (setq query (read-from-minibuffer "Autojump query? ")))
     (let ((dir
-           (ido-completing-read
-            "Dired: "
-            (split-string
-             (replace-regexp-in-string
-              ".*__.__" ""
-              (shell-command-to-string (concat "autojump --bash --completion " query)))
-             "\n" t)
-            nil t)))
+           (let ((results
+                  (split-string
+                   (replace-regexp-in-string
+                    ".*__.__" ""
+                    (replace-regexp-in-string
+                     "^'\\|'\n" ""
+                     (shell-command-to-string (concat "autojump --bash --completion " query))))
+                   "\n" t)))
+             (if (> (length results) 2)
+                 (ido-completing-read "Dired: " results nil t)
+               (car results)))
+           ))
       (if (file-readable-p dir)
           (dired dir)
         (message "Directory %s doesn't exist" dir))
       ))
 
-  (global-set-key (kbd "C-c C-a") 'ido-autojump)
+  (global-set-key (kbd "C-6") 'ido-autojump)
 
   (defun autojump-add-directory ()
     "Adds the directory of the current buffer/file to the autojump database"
@@ -464,7 +472,7 @@ Call a second time to restore the original window configuration."
 
   )
 
-;; advices ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * advices
 
 ;; slick-copy: make copy-past a bit more intelligent
 ;; from: http://www.emacswiki.org/emacs/SlickCopy
@@ -508,9 +516,9 @@ Dmitriy Igrishin's patched version of comint.el."
         ;; comint's "Type space to flush" swallows space. put it back in.
         (setq unread-command-events (listify-key-sequence " "))))
 
-;; modes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * modes
 
-;; auctex-mode
+;; ** auctex-mode
 (setq TeX-PDF-mode t)
 (setq TeX-parse-self t)
 (setq TeX-auto-save t)
@@ -526,7 +534,7 @@ Dmitriy Igrishin's patched version of comint.el."
              )
           )
 
-;; auto-complete
+;; ** auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
 (setq ac-quick-help-height 40)
@@ -535,7 +543,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq ac-disable-faces nil)
 (global-set-key (kbd "C-7") 'auto-complete)
 
-;; back-button
+;; ** back-button
 (setq back-button-global-backward-keystrokes '("C-x w"))
 (setq back-button-global-forward-keystrokes '("C-x e"))
 (setq back-button-local-backward-keystrokes '("C-x s"))
@@ -544,7 +552,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "C-4") 'back-button-local-forward)
 (back-button-mode 1)
 
-;; calfw
+;; ** calfw
 (require 'calfw-ical)
 (require 'calfw-org)
 (defun my-open-calendar ()
@@ -558,17 +566,17 @@ Dmitriy Igrishin's patched version of comint.el."
 (key-chord-define-global "cv" 'my-open-calendar)
 (global-set-key (kbd "C-c C") 'my-open-calendar)
 
-;; conf-mode
+;; ** conf-mode
 (add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
 
-;; deft
+;; ** deft
 (setq
  deft-extension "org"
  deft-directory "~/"
  deft-auto-save-interval 0
  deft-text-mode 'org-mode)
 
-;; diff-hl
+;; ** diff-hl
 (unless emacs<24
   (global-diff-hl-mode 1)
   (defun diff-hl-update-each-buffer ()
@@ -583,10 +591,10 @@ Dmitriy Igrishin's patched version of comint.el."
     (progn (diff-hl-update-each-buffer)))
   )
 
-;; dired+
+;; ** dired+
 (toggle-diredp-find-file-reuse-dir 1)
 
-;; ecb
+;; ** ecb
 (setq
  ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2)
  ecb-tip-of-the-day nil
@@ -597,7 +605,7 @@ Dmitriy Igrishin's patched version of comint.el."
                                   (ecb-toggle-ecb-windows))
                                 ))
 
-;; erc mode
+;; ** erc mode
 (add-hook 'erc-mode-hook (lambda ()
                            (erc-truncate-mode t)
                            (set (make-local-variable 'scroll-conservatively) 1000)
@@ -647,33 +655,33 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (global-set-key (kbd "C-c b") 'rgr/ido-erc-buffer)
 
-;; fic-ext-mode
+;; ** fic-ext-mode
 (add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
 
-;; flycheck-mode
+;; ** flycheck-mode
 (add-hook 'php-mode-hook 'flycheck-mode)
 (add-hook 'sh-mode-hook 'flycheck-mode)
 (add-hook 'json-mode-hook 'flycheck-mode)
 (key-chord-define-global "fc" 'flycheck-mode)
 
-;; flyspell-mode
+;; ** flyspell-mode
 (global-set-key (kbd "C-c f")  'flyspell-mode)
 
-;; google-this
+;; ** google-this
 (google-this-mode 1)
 (key-chord-define-global "gt" 'google-this)
 (key-chord-define-global "gs" 'google-search)
 
-;; hackernews
+;; ** hackernews
 (key-chord-define-global "bn" 'hackernews)
 
-;; haskell-mode
+;; ** haskell-mode
 (require 'haskell-mode)
 (setq haskell-indent-thenelse 3)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 
-;; helm
+;; ** helm
 (require 'helm-config)
 (setq enable-recursive-minibuffers t)
 (when (not emacs<24) (helm-mode 1))
@@ -704,7 +712,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (require 'helm-git)
 (global-set-key (kbd "M-0") 'helm-git-find-files)
 
-;; highlight-symbol
+;; ** highlight-symbol
 (setq highlight-symbol-on-navigation-p t)
 (setq highlight-symbol-idle-delay 0.2)
 (global-set-key (kbd "M-2") 'highlight-symbol-occur)
@@ -712,7 +720,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "M-4") (lambda () (interactive) (highlight-symbol-jump 1)))
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
-;; ido-mode
+;; ** ido-mode
 (setq ido-enable-flex-matching t
       ido-auto-merge-work-directories-length -1
       ido-create-new-buffer 'always
@@ -723,18 +731,18 @@ Dmitriy Igrishin's patched version of comint.el."
       )
 (ido-mode 1)
 
-;; iedit
+;; ** iedit
 (require 'iedit)
 (setq iedit-unmatched-lines-invisible-default t)
 
-;; isearch+
+;; ** isearch+
 (eval-after-load "isearch" '(require 'isearch+))
 
-;; jinja2-mode for twig
+;; ** jinja2-mode for twig
 (require 'jinja2-mode)
 (add-to-list 'auto-mode-alist '("\\.twig$" . jinja2-mode))
 
-;; js2-mode
+;; ** js2-mode
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-hook 'js2-mode-hook
           (lambda ()
@@ -745,25 +753,25 @@ Dmitriy Igrishin's patched version of comint.el."
             (local-set-key (kbd "C-c h") (lambda () (interactive) (mark-paragraph) (slime-eval-region (region-beginning) (region-end))))
             ))
 
-;; json-mode
+;; ** json-mode
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 
-;; lorem-ipsum
+;; ** lorem-ipsum
 (require 'lorem-ipsum)
 (global-unset-key (kbd "C-x l"))
 (global-set-key (kbd "C-x l l") 'Lorem-ipsum-insert-list)
 (global-set-key (kbd "C-x l p") 'Lorem-ipsum-insert-paragraphs)
 (global-set-key (kbd "C-x l s") 'Lorem-ipsum-insert-sentences)
 
-;; magit
+;; ** magit
 (global-set-key (kbd "C-c g") 'magit-status)
 (setq magit-commit-all-when-nothing-staged t)
 
-;; markdown
+;; ** markdown
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-;; mu4e
+;; ** mu4e
 (when (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e")
   (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
   (autoload 'mu4e "mu4e" "Mail client based on mu (maildir-utils)." t)
@@ -798,13 +806,13 @@ Dmitriy Igrishin's patched version of comint.el."
   (key-chord-define-global "nm" 'mu4e)
   )
 
-;; multiple-cursors
+;; ** multiple-cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-*") 'mc/mark-all-like-this)
 
-;; multi-web-mode
+;; ** multi-web-mode
 ;; (when (require 'multi-web-mode nil t)
 ;;   (setq mweb-default-major-mode 'html-mode)
 ;;   (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
@@ -824,33 +832,43 @@ Dmitriy Igrishin's patched version of comint.el."
                    )
             ))
 
-;; mutt, load mail-mode
+;; ** mutt, load mail-mode
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 (add-hook 'mail-mode-hook (lambda ()
                             (flyspell-mode 1)
                             ))
 
-;; org-mode
+;; ** org-mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
 (setq
-  appt-display-mode-line t     ;; show in the modeline
+  appt-display-mode-line t     ; show in the modeline
   appt-display-format 'window)
-(appt-activate 1)              ;; activate appt (appointment notification)
-(org-agenda-to-appt)           ;; add appointments on startup
+(appt-activate 1)              ; activate appt (appointment notification)
+(org-agenda-to-appt)           ; add appointments on startup
 ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)))
 (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
 )
 
-;; php-mode from melpa
+;; outline-mode
+(require 'outlined-elisp-mode)
+(add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
+(add-hook 'outline-minor-mode-hook
+          (lambda ()
+            (require 'outline-magic)
+            (local-set-key "\C-c\C-c" outline-mode-prefix-map)
+            (define-key outline-minor-mode-map (kbd "C-`") 'outline-cycle)
+            ))
+
+;; ** php-mode from melpa
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
 (add-to-list 'ac-sources 'ac-source-php-completion-patial)
 (setq php-manual-path "/usr/share/doc/php-doc/html/")
-;; php-align, not in repo
+;; ** php-align, not in repo
 (add-hook 'php-mode-hook
           (lambda ()
             (when (require 'php-documentor nil t)
@@ -862,7 +880,7 @@ Dmitriy Igrishin's patched version of comint.el."
             (eldoc-mode 1)
             )
           )
-;; die me some var_dump quickly
+;; ** die me some var_dump quickly
 (defun var_dump-die (start end)
   (interactive "r")
   (if mark-active
@@ -888,10 +906,10 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (key-chord-define-global "dv" 'var_dump)
 
-;; prog-mode
+;; ** prog-mode
 (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1))) ; show whitespace errors
 
-;; projectile
+;; ** projectile
 ;(projectile-global-mode)
 (require 'projectile nil t)
 ;(setq projectile-enable-caching t)
@@ -900,7 +918,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (key-chord-define-global "ok" 'projectile-multi-occur)
 (key-chord-define-global "aw" 'projectile-ack)
 
-;; rainbow-mode
+;; ** rainbow-mode
 (dolist (hook '(css-mode-hook
                 html-mode-hook
                 js-mode-hook
@@ -911,27 +929,27 @@ Dmitriy Igrishin's patched version of comint.el."
   (add-hook hook 'rainbow-mode)
   )
 
-;; robe
+;; ** robe
 (add-hook 'ruby-mode-hook
           (lambda ()
             (robe-mode 1)
             (push 'ac-source-robe ac-sources)))
 
-;; session
+;; ** session
 ;; (add-hook 'after-init-hook 'session-initialize)
 
-;; sgml
+;; ** sgml
 (setq sgml-basic-offset 4)
 (add-hook 'sgml-mode-hook 'sgml-electric-tag-pair-mode)
 
-;; slime
+;; ** slime
 (when (file-exists-p "~/quicklisp/slime-helper.el") (load "~/quicklisp/slime-helper.el"))
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'slime-repl-mode))
 
-;; sql-completion, not in repo
+;; ** sql-completion, not in repo
 (when (require 'sql-completion nil t)
   (setq sql-interactive-mode-hook
         (lambda ()
@@ -939,14 +957,14 @@ Dmitriy Igrishin's patched version of comint.el."
           (sql-mysql-completion-init)))
   )
 
-;; term-mode
+;; ** term-mode
 (add-hook 'term-mode-hook (lambda()
                 (yas-minor-mode -1)))
 
-;; tempo
+;; ** tempo
 (require 'tempo nil t)
 
-;; undo-tree
+;; ** undo-tree
 (global-undo-tree-mode 1)
 (global-set-key (kbd "C-'") 'undo-tree-redo)
 (global-set-key (kbd "C-,") 'undo-tree-visualize)
@@ -954,18 +972,18 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq undo-tree-visualizer-timestamps t)
 
 
-;; uniqify
+;; ** uniqify
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-min-dir-content 2)
 
-;; yasnippets
+;; ** yasnippets
 (yas-global-mode 1)
 (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt yas-x-prompt yas-dropdown-prompt yas-no-prompt))
 
-;; visible-mark
+;; ** visible-mark
 (require 'visible-mark nil t)
-;; add faces for visible-mark
+;; ** add faces for visible-mark
 (defface visible-mark-face1 '((t (:underline (:style wave :color "yellow")))) "")
 (defface visible-mark-face2 '((t (:underline (:style wave :color "green")))) "")
 (defface visible-mark-face3 '((t (:underline (:style wave :color "red")))) "")
@@ -978,10 +996,10 @@ Dmitriy Igrishin's patched version of comint.el."
 ; globally activate visible-mark-mode
 (global-visible-mark-mode)
 
-;; visual-regexp
+;; ** visual-regexp
 (key-chord-define-global "vr" 'vr/replace)
 
-;; w3m, optional
+;; ** w3m, optional
 (when (require 'w3m nil t)
   (setq
    w3m-use-favicon nil
@@ -1019,21 +1037,21 @@ Dmitriy Igrishin's patched version of comint.el."
                         )))
   )
 
-;; whole-line-or-region // actually the defadvice works better than this mode
+;; ** whole-line-or-region // actually the defadvice works better than this mode
 ;(whole-line-or-region-mode 1)
 
-;; yaml-mode
+;; ** yaml-mode
 (setq yaml-indent-offset 4)
 
-;; stuff that needs to be last ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; * end
 
-;; turn on the keyboard overrides
+;; ** turn on the keyboard overrides
 (define-minor-mode my-keys-minor-mode
   "A minor mode so that my key settings override annoying major modes."
   t " K" 'my-keys-minor-mode-map)
 (my-keys-minor-mode 1)
 
-;; makes it possible to do /sudo:host: , reads pws from ~/.authinfo.gpg
+;; **  makes it possible to do /sudo:host: , reads pws from ~/.authinfo.gpg
 (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
 (add-to-list 'tramp-default-proxies-alist '((regexp-quote (system-name)) nil nil))
 
