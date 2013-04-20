@@ -855,13 +855,28 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; outline-mode
 (require 'outlined-elisp-mode)
+(define-prefix-command 'cm-map nil "Outline-") ; Outline-minor-mode key map
+(define-key cm-map "q" 'hide-sublevels)    ; Hide everything but the top-level headings
+(define-key cm-map "t" 'hide-body)         ; Hide everything but headings (all body lines)
+(define-key cm-map "o" 'hide-other)        ; Hide other branches
+(define-key cm-map "c" 'hide-entry)        ; Hide this entry's body
+(define-key cm-map "l" 'hide-leaves)       ; Hide body lines in this entry and sub-entries
+(define-key cm-map "d" 'hide-subtree)      ; Hide everything in this entry and sub-entries
+(define-key cm-map "a" 'show-all)          ; Show (expand) everything
+(define-key cm-map "e" 'show-entry)        ; Show this heading's body
+(define-key cm-map "i" 'show-children)     ; Show this heading's immediate child sub-headings
+(define-key cm-map "k" 'show-branches)     ; Show all sub-headings under this heading
+(define-key cm-map "s" 'show-subtree)      ; Show (expand) everything in this heading & below
+(define-key cm-map "u" 'outline-up-heading)                ; Up
+(define-key cm-map "n" 'outline-next-visible-heading)      ; Next
+(define-key cm-map "p" 'outline-previous-visible-heading)  ; Previous
+(define-key cm-map "f" 'outline-forward-same-level)        ; Forward - same level
+(define-key cm-map "b" 'outline-backward-same-level)       ; Backward - same level
+(define-key cm-map "\C-t" 'outline-cycle)
+(global-set-key "\C-t" cm-map)
 (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
-(add-hook 'outline-minor-mode-hook
-          (lambda ()
-            (require 'outline-magic)
-            (local-set-key "\C-c\C-c" outline-mode-prefix-map)
-            (define-key outline-minor-mode-map (kbd "C-`") 'outline-cycle)
-            ))
+(add-hook 'outline-minor-mode-hook (lambda () (require 'outline-magic)))
+
 
 ;; ** php-mode from melpa
 (require 'php-mode)
