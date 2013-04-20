@@ -63,9 +63,11 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `,.`      | Delete the current frame
 **Movement / Selections**  | `M-p`     | move to next expression
                            | `M-n`     | move to previous expression
-                           | `C-2`     | show all symbols like the one cursor is located at
-                           | `C-3`     | previous symbol like the one the cursor is on
-                           | `C-4`     | next symbol like the one the cursor is on
+                           | `C-3`     | go to last automatically saved position
+                           | `C-4`     | go to next automatically saved  position
+                           | `M-2`     | show all symbols like the one cursor is located at
+                           | `M-3`     | previous symbol like the one the cursor is on
+                           | `M-4`     | next symbol like the one the cursor is on
                            | `i9`      | toggle automatic identation
                            | `M-i`     | select symbol under cursor, pressing again will smartly expand the region
                            | `M-o`     | narrow the selection again
@@ -75,14 +77,16 @@ I only describe my custom key combinations currently. To learn the standard Emac
 **Undo/Redo**              | `C-/`     | Undo
                            | `C-'`     | Redo
                            | `C-,`     | Visualize undo/redo tree
-**Completion**             | `C-;`     | Trigger auto-completion explicitly (with fuzzy matching)
+**Completion**             | `C-7`     | Trigger auto-completion explicitly (with fuzzy matching)
 **Formatting**             | `C-c w`   | cleanup whitespace
                            | `C-c j`   | join two lines
                            | `90`      | toggle `INSERT` (overwrite-mode)
                            | `ac`      | align expressions, e.g. align all `=` in 3 lines with assignments
-**Searching / Grepping**   | `34`      | find definitions (functions, headings etc.) in current file
+**Search / Replace**       | `34`      | find definitions (functions, headings etc.) in current file
                            | `gt`      | google selection / word under cursor (in web browser)
                            | `gs`      | google (prompt and search in web browser)
+                           | `vr`      | search/replace with visual regexp
+                           | `C-;`     | edit occurences of current word on the fly, press again to exit
 **Project related**        | `fr`      | find files in current project
                            | `rg`      | grep through current project
                            | `ok`      | show occurrences of a string in current project

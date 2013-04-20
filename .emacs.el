@@ -78,6 +78,9 @@
         (:name sql-completion
                :type http
                :url "http://www.emacswiki.org/emacs/download/sql-completion.el")
+        (:name visible-mark
+               :type http
+               :url "http://www.emacswiki.org/emacs/download/visible-mark.el")
         )
       )
 
@@ -116,6 +119,7 @@
             auctex
             auto-install
             auto-complete
+            back-button
             buffer-move
             calfw
             clojure-mode
@@ -195,71 +199,176 @@
 
   )
 
-;; key rebindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; key bindings (mode specific bindings are defined with the mode's settings) ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; my keymap to override problematic bindings
-(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+;; key-chord
+(key-chord-mode 1)
+(setq key-chord-two-keys-delay 0.03)
 
+;; general
+(global-set-key (kbd "C-c X") (lambda () (interactive) (shell-command "pkill emacs")))
+(global-set-key (kbd "C-c s") 'shell)
+(key-chord-define-global "cd" (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))))
+(key-chord-define-global "sb" 'speedbar)
 (global-set-key (kbd "C-S-l") 'package-list-packages-no-fetch)
-
-;; http://stackoverflow.com/questions/557282/in-emacs-whats-the-best-way-for-keyboard-escape-quit-not-destroy-other-windows
-(defadvice keyboard-escape-quit (around my-keyboard-escape-quit activate) (flet ((one-window-p (&optional nomini all-frames) t)) ad-do-it))
-
-(global-set-key (kbd "C-x C-b") 'ido-switch-buffer)   ;use ido to switch buffers
-(global-set-key (kbd "C-c o") 'occur)                  ;list matching regexp
-(global-set-key (kbd "C-c q") 'auto-fill-mode)         ;toggles word wrap
-(global-set-key (kbd "C-c w") 'whitespace-cleanup)     ;cleanup whitespaces
-(global-set-key (kbd "C-c i") (lambda () (interactive) ;indent the whole the buffer
-                          (indent-region (point-min) (point-max))))
-(global-set-key (kbd "C-c j") 'join-line)
+(global-set-key (kbd "C-c d")  'ispell-change-dictionary)
+(global-set-key (kbd "C-c l")  (lambda () (interactive) (load "~/.emacs"))) ;reload .emacs
+(key-chord-define-global "cg" 'customize-group)
+;; appearance
+(global-set-key (kbd "C-c m") 'menu-bar-mode)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
+(key-chord-define-global "ln" 'linum-mode)
+
+;; buffer / file
+(global-set-key (kbd "C-c r")  'revert-buffer)
+(global-set-key (kbd "C-x C-b") 'ido-switch-buffer)   ;use ido to switch buffers
+(global-set-key (kbd "<f6>") (lambda () (interactive) (kill-buffer (buffer-name)))) ;kill current buffer
+(global-set-key (kbd "<f8>") (lambda () (interactive) (switch-to-buffer nil))) ;"other" buffer
+(key-chord-define-global "jn" (lambda () (interactive) (switch-to-buffer nil))) ;"other" buffer
+(key-chord-define-global "fv" (lambda () (interactive) (kill-buffer (buffer-name)))) ;kill current buff
+(global-set-key (kbd "<M-up>")    'buf-move-up)
+(global-set-key (kbd "<M-down>")  'buf-move-down)
+(global-set-key (kbd "<M-left>")  'buf-move-left)
+(global-set-key (kbd "<M-right>") 'buf-move-right)
+(key-chord-define-global "eb" 'eval-buffer)
+(key-chord-define-global "sv" 'save-buffer)
+
+;; window / frame
+(global-set-key (kbd "C-0") (lambda () (interactive) (select-window (previous-window)))) ;select prev window
+(global-set-key (kbd "C-9") (lambda () (interactive) (select-window (next-window))))     ;select next window
+(key-chord-define-global "ef" (lambda () (interactive) (select-window (previous-window))))
+(key-chord-define-global "ji" (lambda () (interactive) (select-window (next-window))))
+(global-set-key (kbd "<C-f8>") (lambda () (interactive) (select-window (previous-window)))) ;for the terminal
+(global-set-key (kbd "<C-f9>") (lambda () (interactive) (select-window (next-window)))) ;for the terminal
+(global-set-key (kbd "<f2>") 'split-window-vertically)
+(global-set-key (kbd "<f3>") 'split-window-horizontally)
+(global-set-key (kbd "<f4>") 'delete-window)
+(global-set-key (kbd "<f5>") 'delete-other-windows)
+(global-set-key (kbd "<C-left>") 'shrink-window)
+(global-set-key (kbd "<C-right>") 'enlarge-window)
+(global-set-key (kbd "<C-up>") 'shrink-window-horizontally)
+(global-set-key (kbd "<C-down>") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-8") (lambda () (interactive) (other-frame -1)))
+(global-set-key (kbd "C-S-8") (lambda () (interactive) (other-frame 1)))
+(key-chord-define-global "jo" 'delete-window)
+(key-chord-define-global "fw" 'delete-other-windows)
+(key-chord-define-global "sf" 'split-window-horizontally)
+(key-chord-define-global "jl" 'split-window-vertically)
+(key-chord-define-global ",." 'delete-frame)
+
+;; movement / selections
 (global-set-key (kbd "M-p") 'backward-sexp)
 (global-set-key (kbd "M-n") 'forward-sexp)
 (global-set-key (kbd "M-i") 'er/expand-region)
 (global-set-key (kbd "M-I") 'er/mark-inside-pairs)
 (global-set-key (kbd "M-o") 'er/contract-region)
-(global-set-key (kbd "C-c f")  'flyspell-mode)
-(global-set-key (kbd "C-c d")  'ispell-change-dictionary)
-(global-set-key (kbd "C-c r")  'revert-buffer)
+(key-chord-define-global "sd" 'move-beginning-of-line)
+(key-chord-define-global "kl" 'move-end-of-line)
+(key-chord-define-global "wf" 'forward-word)
+(key-chord-define-global "aj" (lambda ()  (interactive) (end-of-line) (set-mark (line-beginning-position))))
+(key-chord-define-global "wa" 'backward-word)
+(key-chord-define-global "i9" 'electric-indent-mode)
 (global-set-key (kbd "M-W" ) 'delete-region)  ;delete region (but don't put it into kill ring)
-(global-set-key (kbd "C-c l")  (lambda () (interactive) (load "~/.emacs"))) ;reload .emacs
 
-(global-set-key (kbd "C-c s") 'shell)
-(global-set-key (kbd "C-c m") 'menu-bar-mode)
+;; formatting
+(global-set-key (kbd "C-c w") 'whitespace-cleanup)     ;cleanup whitespaces
+(global-set-key (kbd "C-c i") (lambda () (interactive) ;indent the whole the buffer
+                          (indent-region (point-min) (point-max))))
+(global-set-key (kbd "C-c j") 'join-line)
+(key-chord-define-global "ac" 'align-current)
+(key-chord-define-global "wd" 'kill-word)
+(key-chord-define-global "wr" 'kill-whole-line)
+(key-chord-define-global "90" 'overwrite-mode)
+(global-set-key (kbd "C-c q") 'auto-fill-mode) ;toggles word wrap
 
-(global-set-key (kbd "C-c C") 'my-open-calendar)
+;; searching / grepping
+(key-chord-define-global "vg" 'vc-git-grep)
+(key-chord-define-global "fg" 'grep-find)
+(global-set-key (kbd "C-c o") 'occur) ;list matching regexp
 
-(global-set-key (kbd "C-c X") (lambda () (interactive) (shell-command "pkill emacs")))
+;; my keymap to override problematic bindings
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 
-;; these only work in GUI
-(global-set-key (kbd "C-0") (lambda () (interactive) (select-window (previous-window)))) ;select prev window
-(global-set-key (kbd "C-9") (lambda () (interactive) (select-window (next-window))))     ;select next window
+;; general options ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(global-set-key (kbd "<C-f8>") (lambda () (interactive) (select-window (previous-window)))) ;select prev window
-(global-set-key (kbd "<C-f9>") (lambda () (interactive) (select-window (next-window))))     ;select next window
+;; load the secrets if available
+(when (file-readable-p "~/.secrets.el") (load "~/.secrets.el"))
 
-(global-set-key (kbd "<f2>") 'split-window-vertically)
-(global-set-key (kbd "<f3>") 'split-window-horizontally)
-(global-set-key (kbd "<f4>") 'delete-window)
-(global-set-key (kbd "<f5>") 'delete-other-windows)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
 
-(global-set-key (kbd "<f6>") (lambda () (interactive) (kill-buffer (buffer-name)))) ;kill current buffer
-(global-set-key (kbd "<f8>") (lambda () (interactive) (switch-to-buffer nil))) ;"other" buffer
+(setq
+ inhibit-startup-message t
+ backup-directory-alist `((".*" . ,temporary-file-directory)) ;don't clutter my fs and put backups into tmp
+ browse-url-browser-function 'browse-url-generic ;default browser
+ browse-url-generic-program "x-www-browser"      ;to open urls
+ auto-save-default nil              ;disable auto save
+ require-final-newline t            ;auto add newline at the end of file
+ column-number-mode t               ;show the column number
+ default-major-mode 'text-mode      ;use text mode per default
+ truncate-partial-width-windows nil ;make side by side buffers break the lines
+ mouse-yank-at-point t              ;middle click with the mouse yanks at point
+ history-length 250                 ;default is 30
+ locale-coding-system 'utf-8        ;utf-8 is default
+ confirm-nonexistent-file-or-buffer nil
+ vc-follow-symlinks t
+ recentf-max-saved-items 5000
+ )
 
-(global-set-key (kbd "<C-left>") 'shrink-window)
-(global-set-key (kbd "<C-right>") 'enlarge-window)
-(global-set-key (kbd "<C-up>") 'shrink-window-horizontally)
-(global-set-key (kbd "<C-down>") 'enlarge-window-horizontally)
+(setq-default
+ tab-width 4
+ indent-tabs-mode nil                ;use spaces instead of tabs
+ c-basic-offset 4
+ c-auto-hungry-state 1
+ )
 
-(global-set-key (kbd "C-8") (lambda () (interactive) (other-frame -1)))
-(global-set-key (kbd "C-S-8") (lambda () (interactive) (other-frame 1)))
+(global-auto-revert-mode 1)          ;auto revert buffers when changed on disk
+(show-paren-mode t)                  ;visualize()
+(iswitchb-mode t)                    ;use advanced tab switching
+(blink-cursor-mode -1)
+(tool-bar-mode -1)                   ;disable the awful toolbar
+(menu-bar-mode -1)                   ;no menu
+(scroll-bar-mode -1)
+;(global-hl-line-mode 0)
 
-;; buffer-move
-(global-set-key (kbd "<M-up>")    'buf-move-up)
-(global-set-key (kbd "<M-down>")  'buf-move-down)
-(global-set-key (kbd "<M-left>")  'buf-move-left)
-(global-set-key (kbd "<M-right>") 'buf-move-right)
+;(defun yes-or-no-p (&rest ignored) t)    ;turn off most confirmations
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+; http://www.masteringemacs.org/articles/2010/11/14/disabling-prompts-emacs/
+(setq kill-buffer-query-functions
+  (remq 'process-kill-buffer-query-function
+         kill-buffer-query-functions))
+
+(put 'dired-find-alternate-file 'disabled nil) ;don't always open new buffers in dired
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector [("black" . "#8a8888") ("#EF3460" . "#F25A7D") ("#BDEF34" . "#DCF692") ("#EFC334" . "#F6DF92") ("#34BDEF" . "#92AAF6") ("#B300FF" . "#DF92F6") ("#3DD8FF" . "#5AF2CE") ("#FFFFFF" . "#FFFFFF")])
+ '(ecb-options-version "2.40")
+ '(send-mail-function (quote sendmail-send-it)))
+ ;; '(session-use-package t nil (session)))
+
+;; system specific settings
+(when (eq system-type 'gnu/linux)
+  (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t) ;activate coloring
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)   ;for the shell
+  (setq x-select-enable-clipboard t)                           ;enable copy/paste from emacs to other apps
+  )
+
+;; theme / colors ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(load-theme 'grandshell t)
+
+(custom-set-faces
+ '(default ((t (:background "black" :foreground "#babdb6" :family "Bitstream Vera Sans Mono" :height 89)))))
+
+;; custom functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; copy filename of current buffer to kill ring
 (defun show-file-name ()
@@ -355,74 +464,7 @@ Call a second time to restore the original window configuration."
 
   )
 
-;; general options ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; load the secrets if available
-(when (file-readable-p "~/.secrets.el") (load "~/.secrets.el"))
-
-(setq
- inhibit-startup-message t
- backup-directory-alist `((".*" . ,temporary-file-directory)) ;don't clutter my fs and put backups into tmp
- browse-url-browser-function 'browse-url-generic ;default browser
- browse-url-generic-program "x-www-browser"      ;to open urls
- auto-save-default nil              ;disable auto save
- require-final-newline t            ;auto add newline at the end of file
- column-number-mode t               ;show the column number
- default-major-mode 'text-mode      ;use text mode per default
- truncate-partial-width-windows nil ;make side by side buffers break the lines
-; tab-always-indent 'complete        ;try completion if already idented
- mouse-yank-at-point t              ;middle click with the mouse yanks at point
- history-length 250                 ;default is 30
- locale-coding-system 'utf-8        ;utf-8 is default
- confirm-nonexistent-file-or-buffer nil
- vc-follow-symlinks t
- recentf-max-saved-items 5000
- )
-
-(setq ido-enable-flex-matching t
-      ido-auto-merge-work-directories-length -1
-      ido-create-new-buffer 'always
-      ido-use-filename-at-point 'guess
-      ido-everywhere t
-      ido-default-buffer-method 'selected-window
-      ido-max-prospects 32
-      )
-(ido-mode 1)
-
-(setq-default
- tab-width 4
- indent-tabs-mode nil                ;use spaces instead of tabs
- c-basic-offset 4
- c-auto-hungry-state 1
- )
-
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-language-environment "UTF-8")
-(prefer-coding-system 'utf-8)
-
-(global-auto-revert-mode 1)          ;auto revert buffers when changed on disk
-(show-paren-mode t)                  ;visualize()
-(iswitchb-mode t)                    ;use advanced tab switching
-(blink-cursor-mode -1)
-(tool-bar-mode -1)                   ;disable the awful toolbar
-(menu-bar-mode -1)                   ;no menu
-(scroll-bar-mode -1)
-;(global-hl-line-mode 0)
-
-;; show whitespace errors in programming modes
-(add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
-;; highlight TODO/FIXME/...
-(add-hook 'prog-mode-hook 'fic-ext-mode)
-
-;(defun yes-or-no-p (&rest ignored) t)    ;turn off most confirmations
-(defalias 'yes-or-no-p 'y-or-n-p)
-; http://www.masteringemacs.org/articles/2010/11/14/disabling-prompts-emacs/
-(setq kill-buffer-query-functions
-  (remq 'process-kill-buffer-query-function
-         kill-buffer-query-functions))
-
-(put 'dired-find-alternate-file 'disabled nil) ;don't always open new buffers in dired
+;; advices ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; slick-copy: make copy-past a bit more intelligent
 ;; from: http://www.emacswiki.org/emacs/SlickCopy
@@ -466,29 +508,6 @@ Dmitriy Igrishin's patched version of comint.el."
         ;; comint's "Type space to flush" swallows space. put it back in.
         (setq unread-command-events (listify-key-sequence " "))))
 
-
-(load-theme 'grandshell t)
-(custom-set-faces
- '(default ((t (:background "black" :foreground "#babdb6" :family "Bitstream Vera Sans Mono" :height 89)))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector [("black" . "#8a8888") ("#EF3460" . "#F25A7D") ("#BDEF34" . "#DCF692") ("#EFC334" . "#F6DF92") ("#34BDEF" . "#92AAF6") ("#B300FF" . "#DF92F6") ("#3DD8FF" . "#5AF2CE") ("#FFFFFF" . "#FFFFFF")])
- '(ecb-options-version "2.40")
- '(send-mail-function (quote sendmail-send-it)))
- ;; '(session-use-package t nil (session)))
-
-;; system specific settings
-(when (eq system-type 'gnu/linux)
-  (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t) ;activate coloring
-  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)   ;for the shell
-  (setq x-select-enable-clipboard t)                           ;enable copy/paste from emacs to other apps
-  )
-
-(add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
-
 ;; modes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; auctex-mode
@@ -514,8 +533,16 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq ac-quick-help-delay 0.75)
 (setq ac-use-fuzzy t)
 (setq ac-disable-faces nil)
-(setq ac-use-menu-map t)
-(global-set-key (kbd "C-;") 'auto-complete)
+(global-set-key (kbd "C-7") 'auto-complete)
+
+;; back-button
+(setq back-button-global-backward-keystrokes '("C-x w"))
+(setq back-button-global-forward-keystrokes '("C-x e"))
+(setq back-button-local-backward-keystrokes '("C-x s"))
+(setq back-button-local-forward-keystrokes '("C-x d"))
+(global-set-key (kbd "C-3") 'back-button-local-backward)
+(global-set-key (kbd "C-4") 'back-button-local-forward)
+(back-button-mode 1)
 
 ;; calfw
 (require 'calfw-ical)
@@ -528,6 +555,11 @@ Dmitriy Igrishin's patched version of comint.el."
     (cfw:org-create-source "Green")  ; orgmode source
     (cfw:ical-create-source "gcal" gcal-url "Gray")  ; ICS source1
    )))
+(key-chord-define-global "cv" 'my-open-calendar)
+(global-set-key (kbd "C-c C") 'my-open-calendar)
+
+;; conf-mode
+(add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
 
 ;; deft
 (setq
@@ -615,13 +647,25 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (global-set-key (kbd "C-c b") 'rgr/ido-erc-buffer)
 
+;; fic-ext-mode
+(add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
+
 ;; flycheck-mode
 (add-hook 'php-mode-hook 'flycheck-mode)
-;(add-hook 'sh-mode-hook 'flycheck-mode)
+(add-hook 'sh-mode-hook 'flycheck-mode)
 (add-hook 'json-mode-hook 'flycheck-mode)
+(key-chord-define-global "fc" 'flycheck-mode)
+
+;; flyspell-mode
+(global-set-key (kbd "C-c f")  'flyspell-mode)
 
 ;; google-this
 (google-this-mode 1)
+(key-chord-define-global "gt" 'google-this)
+(key-chord-define-global "gs" 'google-search)
+
+;; hackernews
+(key-chord-define-global "bn" 'hackernews)
 
 ;; haskell-mode
 (require 'haskell-mode)
@@ -642,7 +686,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "<C-f7>") 'helm-mini) ; for the terminal
 (global-set-key (kbd "<C-S-iso-lefttab>") 'helm-for-files)
 (global-set-key (kbd "C-x f") 'helm-find-files)
-(global-set-key (kbd "M-3") 'helm-etags-select)
+;(global-set-key (kbd "M-3") 'helm-etags-select)
 (global-set-key (kbd "M-5") 'helm-gtags-select)
 (global-set-key (kbd "M-7") 'helm-show-kill-ring)
 (global-set-key (kbd "M-8") (lambda () (interactive) (let ((current-prefix-arg t)) (helm-do-grep))))
@@ -650,6 +694,12 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "M--") 'helm-resume)
 (global-set-key (kbd "C-S-h") 'helm-descbinds)
 (global-set-key (kbd "C-c h") 'helm-projectile)
+(key-chord-define-global "fw" 'helm-find-files)
+(key-chord-define-global "fh" 'helm-for-files)
+(key-chord-define-global "hg" (lambda () (interactive) (let ((current-prefix-arg t)) (helm-do-grep))))
+(key-chord-define-global "hh" 'helm-descbinds)
+(key-chord-define-global "lo" 'helm-locate)
+(key-chord-define-global "34" 'helm-imenu)
 
 (require 'helm-git)
 (global-set-key (kbd "M-0") 'helm-git-find-files)
@@ -657,10 +707,25 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; highlight-symbol
 (setq highlight-symbol-on-navigation-p t)
 (setq highlight-symbol-idle-delay 0.2)
-(global-set-key (kbd "C-2") 'highlight-symbol-occur)
-(global-set-key (kbd "C-3") (lambda () (interactive) (highlight-symbol-jump -1)))
-(global-set-key (kbd "C-4") (lambda () (interactive) (highlight-symbol-jump 1)))
+(global-set-key (kbd "M-2") 'highlight-symbol-occur)
+(global-set-key (kbd "M-3") (lambda () (interactive) (highlight-symbol-jump -1)))
+(global-set-key (kbd "M-4") (lambda () (interactive) (highlight-symbol-jump 1)))
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
+
+;; ido-mode
+(setq ido-enable-flex-matching t
+      ido-auto-merge-work-directories-length -1
+      ido-create-new-buffer 'always
+      ido-use-filename-at-point 'guess
+      ido-everywhere t
+      ido-default-buffer-method 'selected-window
+      ido-max-prospects 32
+      )
+(ido-mode 1)
+
+;; iedit
+(require 'iedit)
+(setq iedit-unmatched-lines-invisible-default t)
 
 ;; isearch+
 (eval-after-load "isearch" '(require 'isearch+))
@@ -729,6 +794,8 @@ Dmitriy Igrishin's patched version of comint.el."
     (mu4e-mark-execute-all t))
 
   (setq message-kill-buffer-on-exit t)
+
+  (key-chord-define-global "nm" 'mu4e)
   )
 
 ;; multiple-cursors
@@ -762,85 +829,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'mail-mode-hook (lambda ()
                             (flyspell-mode 1)
                             ))
-
-;; nurumacs
-;; (require 'nurumacs)
-;; (setq nurumacs-map nil)
-;; (setq nurumacs-map-delay 3600)
-;; (add-hook 'nurumacs-map-hook (lambda ()
-;;                                (setq buffer-face-mode-face '(:family "Monospace"))
-;;                                (buffer-face-mode)))
-
-(global-set-key (kbd "<f11>")
-                (lambda ()
-                  (interactive)
-                  (if (eq nurumacs-map nil)
-                      (progn
-                        (setq nurumacs-map t)
-                        (nurumacs--map-show))
-                    (progn
-                      (setq nurumacs-map nil)
-                      (nurumacs--map-kill)
-                      )
-                    )))
-
-;; key-chord
-(key-chord-mode 1)
-(setq key-chord-two-keys-delay 0.03)
-;; navigation
-(key-chord-define-global "sd" 'move-beginning-of-line)
-(key-chord-define-global "kl" 'move-end-of-line)
-(key-chord-define-global "wf" 'forward-word)
-(key-chord-define-global "wa" 'backward-word)
-(key-chord-define-global "wd" 'kill-word)
-(key-chord-define-global "wr" 'kill-whole-line)
-(key-chord-define-global "aj" (lambda ()  (interactive) (end-of-line) (set-mark (line-beginning-position))))
-;; actions
-(key-chord-define-global "eb" 'eval-buffer)
-(key-chord-define-global "i9" 'electric-indent-mode)
-(key-chord-define-global "dv" 'var_dump)
-(key-chord-define-global "bv" 'var_dump-die)
-(key-chord-define-global "vg" 'vc-git-grep)
-(key-chord-define-global "fr" 'projectile-find-file)
-(key-chord-define-global "rg" 'projectile-grep)
-(key-chord-define-global "ok" 'projectile-multi-occur)
-(key-chord-define-global "aw" 'projectile-ack)
-(key-chord-define-global "cv" 'my-open-calendar)
-(key-chord-define-global "fg" 'grep-find)
-(key-chord-define-global "bn" 'hackernews)
-(key-chord-define-global "cd" (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))))
-(key-chord-define-global "vr" 'vr/replace)
-(key-chord-define-global "sb" 'speedbar)
-(key-chord-define-global "34" 'helm-imenu)
-;; region
-(key-chord-define-global "ac" 'align-current)
-;; google
-(key-chord-define-global "gt" 'google-this)
-(key-chord-define-global "gs" 'google-search)
-;; buffers
-(key-chord-define-global "sv" 'save-buffer)
-(key-chord-define-global "jn" (lambda () (interactive) (switch-to-buffer nil))) ;"other" buffer
-(key-chord-define-global "fv" (lambda () (interactive) (kill-buffer (buffer-name)))) ;kill current buffer
-;; windows
-(key-chord-define-global "ef" (lambda () (interactive) (select-window (previous-window)))) ;select prev window
-(key-chord-define-global "ji" (lambda () (interactive) (select-window (next-window))))     ;select next window
-(key-chord-define-global "jo" 'delete-window)
-(key-chord-define-global "fw" 'delete-other-windows)
-(key-chord-define-global "sf" 'split-window-horizontally)
-(key-chord-define-global "jl" 'split-window-vertically)
-(key-chord-define-global ",." 'delete-frame)
-;; modes
-(key-chord-define-global "90" 'overwrite-mode)
-(key-chord-define-global "nm" 'mu4e)
-(key-chord-define-global "fc" 'flycheck-mode)
-(key-chord-define-global "ln" 'linum-mode)
-(key-chord-define-global "pm" 'php-mode)
-;; helm
-(key-chord-define-global "fw" 'helm-find-files)
-(key-chord-define-global "fh" 'helm-for-files)
-(key-chord-define-global "hg" (lambda () (interactive) (let ((current-prefix-arg t)) (helm-do-grep))))
-(key-chord-define-global "hh" 'helm-descbinds)
-(key-chord-define-global "lo" 'helm-locate)
 
 ;; org-mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -885,6 +873,9 @@ Dmitriy Igrishin's patched version of comint.el."
       (insert "die(var_dump("))
     (insert "die(var_dump());")))
 
+(key-chord-define-global "bv" 'var_dump-die)
+(key-chord-define-global "pm" 'php-mode)
+
 (defun var_dump (start end)
   (interactive "r")
   (if mark-active
@@ -895,10 +886,19 @@ Dmitriy Igrishin's patched version of comint.el."
       (insert "var_dump("))
     (insert "var_dump();")))
 
+(key-chord-define-global "dv" 'var_dump)
+
+;; prog-mode
+(add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1))) ; show whitespace errors
+
 ;; projectile
 ;(projectile-global-mode)
 (require 'projectile nil t)
 ;(setq projectile-enable-caching t)
+(key-chord-define-global "fr" 'projectile-find-file)
+(key-chord-define-global "rg" 'projectile-grep)
+(key-chord-define-global "ok" 'projectile-multi-occur)
+(key-chord-define-global "aw" 'projectile-ack)
 
 ;; rainbow-mode
 (dolist (hook '(css-mode-hook
@@ -962,6 +962,24 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; yasnippets
 (yas-global-mode 1)
 (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt yas-x-prompt yas-dropdown-prompt yas-no-prompt))
+
+;; visible-mark
+(require 'visible-mark nil t)
+;; add faces for visible-mark
+(defface visible-mark-face1 '((t (:underline (:style wave :color "yellow")))) "")
+(defface visible-mark-face2 '((t (:underline (:style wave :color "green")))) "")
+(defface visible-mark-face3 '((t (:underline (:style wave :color "red")))) "")
+(defface visible-mark-face4 '((t (:underline (:style wave :color "cyan")))) "")
+(setq visible-mark-faces (quote (visible-mark-face1 visible-mark-face2 visible-mark-face3 visible-mark-face4)))
+(global-visible-mark-mode)
+
+; highlight the last 4 marks
+(setq visible-mark-max 4)
+; globally activate visible-mark-mode
+(global-visible-mark-mode)
+
+;; visual-regexp
+(key-chord-define-global "vr" 'vr/replace)
 
 ;; w3m, optional
 (when (require 'w3m nil t)
