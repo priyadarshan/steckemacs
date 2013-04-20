@@ -998,15 +998,8 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** visible-mark
 (require 'visible-mark nil t)
-;; ** add faces for visible-mark
-(defface visible-mark-face1 '((t (:underline (:style wave :color "yellow")))) "")
-(defface visible-mark-face2 '((t (:underline (:style wave :color "green")))) "")
-(defface visible-mark-face3 '((t (:underline (:style wave :color "red")))) "")
-(defface visible-mark-face4 '((t (:underline (:style wave :color "cyan")))) "")
-(setq visible-mark-faces (quote (visible-mark-face1 visible-mark-face2 visible-mark-face3 visible-mark-face4)))
-; highlight the last 4 marks
-(setq visible-mark-max 4)
-; globally activate visible-mark-mode
+(setq visible-mark-max 10)
+(custom-set-faces '(visible-mark-face ((t (:underline (:color "green" :style wave))))))
 (global-visible-mark-mode 1)
 
 ;; ** visual-regexp
