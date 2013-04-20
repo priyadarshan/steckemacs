@@ -98,3 +98,42 @@ I only describe my custom key combinations currently. To learn the standard Emac
 **Shell**                  | `C-c s`   | open emacs shell
 **PHP**                    | `vd`      | insert var_dump around selection
                            | `vb`      | insert var_dump + die around selection
+
+## Contributions
+
+I'm using **outline-mode** to keep `emacs.el` organized. There's a key map defined with the prefix `C-t`. When you open up `emacs.el` it will fold everything and only show the top level headings. Top level headings have one star:
+
+```lisp
+;; * Top Level Heading
+```
+
+And so on:
+
+```lisp
+;; ** Second Level Heading
+```
+
+You can use `C-t C-t` to show and hide parts of the document. Additionally there are these commands defined:
+
+ combo  | description
+--------|-------------------------------------------------
+`C-t q` | Hide everything but the top-level headings
+`C-t t` | Hide everything but headings (all body lines)
+`C-t o` | Hide other branches
+`C-t c` | Hide this entry's body
+`C-t l` | Hide body lines in this entry and sub-entries
+`C-t d` | Hide everything in this entry and sub-entries
+`C-t a` | Show (expand) everything
+`C-t e` | Show this heading's body
+`C-t i` | Show this heading's immediate child sub-headings
+`C-t k` | Show all sub-headings under this heading
+`C-t s` | Show (expand) everything in this heading & below
+`C-t u` | Up
+`C-t n` | Next
+`C-t p` | Previous
+`C-t f` | Forward - same level
+`C-t b` | Backward - same level
+
+So... that's what should make it easier to keep an overview. If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
+
+Of course you can also just [report issues](https://github.com/steckerhalter/steckemacs/issues) :)
