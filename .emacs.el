@@ -853,7 +853,7 @@ Dmitriy Igrishin's patched version of comint.el."
     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
 )
 
-;; outline-mode
+;; ** outline-mode
 (require 'outlined-elisp-mode)
 (define-prefix-command 'cm-map nil "Outline-") ; Outline-minor-mode key map
 (define-key cm-map "q" 'hide-sublevels)    ; Hide everything but the top-level headings
@@ -964,7 +964,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'slime-repl-mode))
 
-;; ** sql-completion, not in repo
+;; ** sql-completion
 (when (require 'sql-completion nil t)
   (setq sql-interactive-mode-hook
         (lambda ()
@@ -1004,12 +1004,10 @@ Dmitriy Igrishin's patched version of comint.el."
 (defface visible-mark-face3 '((t (:underline (:style wave :color "red")))) "")
 (defface visible-mark-face4 '((t (:underline (:style wave :color "cyan")))) "")
 (setq visible-mark-faces (quote (visible-mark-face1 visible-mark-face2 visible-mark-face3 visible-mark-face4)))
-(global-visible-mark-mode)
-
 ; highlight the last 4 marks
 (setq visible-mark-max 4)
 ; globally activate visible-mark-mode
-(global-visible-mark-mode)
+(global-visible-mark-mode 1)
 
 ;; ** visual-regexp
 (key-chord-define-global "vr" 'vr/replace)
