@@ -80,11 +80,7 @@
         (:name sql-completion
                :type http
                :url "http://www.emacswiki.org/emacs/download/sql-completion.el")
-        (:name visible-mark
-               :type http
-               :url "http://www.emacswiki.org/emacs/download/visible-mark.el")
-        )
-      )
+        ))
 
 ;; need to install package.el for emacs below 24
 (when emacs<24
@@ -216,7 +212,6 @@
 (key-chord-define-global "sb" 'speedbar)
 (global-set-key (kbd "C-S-l") 'package-list-packages-no-fetch)
 (global-set-key (kbd "C-c d")  'ispell-change-dictionary)
-(global-set-key (kbd "C-c l")  (lambda () (interactive) (load "~/.emacs"))) ;reload .emacs
 (key-chord-define-global "cg" 'customize-group)
 ;; ** appearance
 (global-set-key (kbd "C-c m") 'menu-bar-mode)
@@ -538,7 +533,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (require 'auto-complete-config)
 (ac-config-default)
 (setq ac-quick-help-height 40)
-(setq ac-quick-help-delay 0.75)
+(setq ac-quick-help-delay 1)
 (setq ac-use-fuzzy t)
 (setq ac-disable-faces nil)
 (global-set-key (kbd "C-7") 'auto-complete)
@@ -765,6 +760,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** magit
 (global-set-key (kbd "C-c g") 'magit-status)
+(global-set-key (kbd "C-c l") 'magit-log)
 (setq magit-commit-all-when-nothing-staged t)
 
 ;; ** markdown
@@ -883,7 +879,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
 (add-to-list 'ac-sources 'ac-source-php-completion-patial)
 (setq php-manual-path "/usr/share/doc/php-doc/html/")
-;; ** php-align, not in repo
+;; php-align, not in repo
 (add-hook 'php-mode-hook
           (lambda ()
             (when (require 'php-documentor nil t)
@@ -895,7 +891,7 @@ Dmitriy Igrishin's patched version of comint.el."
             (eldoc-mode 1)
             )
           )
-;; ** die me some var_dump quickly
+;; die me some var_dump quickly
 (defun var_dump-die (start end)
   (interactive "r")
   (if mark-active
@@ -995,12 +991,6 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** yasnippets
 (yas-global-mode 1)
 (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt yas-x-prompt yas-dropdown-prompt yas-no-prompt))
-
-;; ** visible-mark
-(require 'visible-mark nil t)
-(setq visible-mark-max 10)
-(custom-set-faces '(visible-mark-face ((t (:underline (:color "green" :style wave))))))
-(global-visible-mark-mode 1)
 
 ;; ** visual-regexp
 (key-chord-define-global "vr" 'vr/replace)

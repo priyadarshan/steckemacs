@@ -94,6 +94,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `ok`      | show occurrences of a string in current project
                            | `aw`      | ack through current project
                            | `C-c g`   | magit status - manual: http://magit.github.io/magit/
+                           | `C-c l`   | magit log
 **Code/Spell checking**    | `cf`      | toggle code checking (flycheck)
                            | `C-c f`   | toggle spell checking (flyspell)
                            | `C-c d`   | change dictionary
