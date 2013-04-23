@@ -80,6 +80,9 @@
         (:name sql-completion
                :type http
                :url "http://www.emacswiki.org/emacs/download/sql-completion.el")
+        (:name rcirc-color
+               :type http
+               :url "http://www.emacswiki.org/emacs/download/rcirc-color.el")
         ))
 
 ;; need to install package.el for emacs below 24
@@ -141,6 +144,7 @@
             helm-projectile
             highlight-symbol
             iedit
+            interaction-log
             isearch+
             jinja2-mode
             js2-mode
@@ -607,18 +611,29 @@ Dmitriy Igrishin's patched version of comint.el."
                            )
           )
 (setq erc-timestamp-format "%H:%M "
-          erc-fill-prefix "      "
-          erc-insert-timestamp-function 'erc-insert-timestamp-left)
+      erc-fill-prefix "      "
+      erc-insert-timestamp-function 'erc-insert-timestamp-left)
 (setq erc-interpret-mirc-color t)
 (setq erc-kill-buffer-on-part t)
 (setq erc-kill-queries-on-quit t)
 (setq erc-kill-server-buffer-on-quit t)
-(setq erc-server-reconnect-timeout 5)
-(setq erc-server-reconnect-attempts 5)
+(setq erc-server-send-ping-interval 45)
+(setq erc-server-send-ping-timeout 180)
+(setq erc-server-reconnect-timeout 60)
 (erc-track-mode t)
 (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
                                 "324" "329" "332" "333" "353" "477"))
 (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
+(global-set-key (kbd "C-c E")
+                (lambda ()
+                  (interactive)
+                  (erc-tls
+                   :server erc-server
+                   :port erc-port
+                   :nick erc-nick
+                   :full-name erc-user-full-name
+                   :password erc-password
+                   )))
 
 ;; ------ template for .secrets.el
 ;; (setq erc-prompt-for-nickserv-password nil)
@@ -730,6 +745,10 @@ Dmitriy Igrishin's patched version of comint.el."
 (require 'iedit)
 (setq iedit-unmatched-lines-invisible-default t)
 
+;; ** interaction-log
+(require 'interaction-log)
+(interaction-log-mode +1)
+(global-set-key (kbd "<f1>") (lambda () (interactive) (display-buffer ilog-buffer-name)))
 ;; ** isearch+
 (eval-after-load "isearch" '(require 'isearch+))
 
@@ -939,6 +958,16 @@ Dmitriy Igrishin's patched version of comint.el."
                 ))
   (add-hook hook 'rainbow-mode)
   )
+
+;; ** rcirc
+(eval-after-load 'rcirc '(require 'rcirc-color))
+(setq rcirc-fill-column 'frame-width)
+(add-hook 'rcirc-mode-hook
+          (lambda ()
+            (flyspell-mode 1)
+            (rcirc-omit-mode)
+            (set (make-local-variable 'scroll-conservatively) 8192)))
+(global-set-key (kbd "C-c I") 'irc)
 
 ;; ** robe
 (add-hook 'ruby-mode-hook

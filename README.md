@@ -37,6 +37,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 **General**                | `C-c X`   | kill emacs (including the daemon if it is running)
                            | `C-S-h`   | show current keyboard shortcuts, allows search too
                            | `C-S-l`   | list available packages
+                           | `f1`      | show interaction log (detailed lists of all the executed commands)
 **Appearance**             | `C-c m`   | show/hide menu
                            | `C--`     | decrease the font size
                            | `C-=`     | increase the font size
