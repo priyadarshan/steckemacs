@@ -546,7 +546,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq ac-quick-help-delay 1)
 (setq ac-use-fuzzy t)
 (setq ac-disable-faces nil)
-(setq ac-quick-help-prefer-x nil)
+(setq ac-quick-help-prefer-x t)
 (global-set-key (kbd "C-7") 'auto-complete)
 (require 'pos-tip)
 ;; from http://emacswiki.org/emacs/AutoComplete
@@ -922,11 +922,43 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** php-mode
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
-(add-to-list 'ac-sources 'ac-source-php-completion-patial)
+
 (let ((manual "/usr/share/doc/php-doc/html/"))
   (when (file-readable-p manual)
     (setq php-manual-path manual)
-    ))
+
+    (when (executable-find "html2text")
+      (setq ac-php-source-p t)
+      ;; auto-complete php-doc (when manual is available)
+      (defun ac-php-doc (symbol-name)
+        (let ((symbol-name (substring-no-properties symbol-name))
+              file begin doc)
+          (setq file (expand-file-name (format "function.%s.html" (replace-regexp-in-string "_" "-" symbol-name)) php-manual-path))
+          (when (file-readable-p file)
+            (with-temp-buffer
+              (insert (shell-command-to-string (concat "html2text -utf8 -style compact " file)))
+              (beginning-of-buffer)
+              (search-forward "Description")
+              (next-line)
+              (beginning-of-line)
+              (delete-region (point) (point-min))
+              (search-forward "Examples")
+              (previous-line)
+              (if (> (line-number-at-pos) 50) (goto-line 50))
+              (beginning-of-line)
+              (delete-region (point) (point-max))
+              (buffer-string)
+              ))))
+
+      (defvar ac-source-php-doc
+        '((candidates . ac-buffer-dictionary)
+          (document . ac-php-doc)
+          (symbol . "d")
+          )
+        "Auto completion source for PHP quick help documentation "
+        )
+      ))
+  )
 
 (defun setup-php-mode ()
   ;; (require 'paredit-c nil t)
@@ -936,6 +968,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (require 'php-align nil t)
   (php-align-setup)
   (php-eldoc-enable)
+  (when ac-php-source-p (add-to-list 'ac-sources 'ac-source-php-doc))
   )
 
 (add-hook 'php-mode-hook 'setup-php-mode)
