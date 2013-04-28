@@ -83,6 +83,9 @@
         (:name rcirc-color
                :type http
                :url "http://www.emacswiki.org/emacs/download/rcirc-color.el")
+        (:name paredit-c
+               :type http
+               :url "https://raw.github.com/dandavison/paredit-c/master/paredit-c.el")
         ))
 
 ;; need to install package.el for emacs below 24
@@ -144,7 +147,6 @@
             helm-projectile
             highlight-symbol
             iedit
-            interaction-log
             isearch+
             jinja2-mode
             js2-mode
@@ -161,9 +163,11 @@
             org
             outline-magic
             outlined-elisp-mode
+;            paredit
             php-eldoc
             php-mode
             popup
+            pos-tip
             rainbow-mode
             robe
             restclient
@@ -335,6 +339,8 @@
 (tool-bar-mode -1)                   ;disable the awful toolbar
 (menu-bar-mode -1)                   ;no menu
 (scroll-bar-mode -1)
+(savehist-mode 1)                    ;save minibuffer history
+
 ;(global-hl-line-mode 0)
 
 ;(defun yes-or-no-p (&rest ignored) t)    ;turn off most confirmations
@@ -536,17 +542,33 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
-(setq ac-quick-help-height 40)
+(setq ac-quick-help-height 50)
 (setq ac-quick-help-delay 1)
 (setq ac-use-fuzzy t)
 (setq ac-disable-faces nil)
+(setq ac-quick-help-prefer-x nil)
 (global-set-key (kbd "C-7") 'auto-complete)
+(require 'pos-tip)
+;; from http://emacswiki.org/emacs/AutoComplete
+(defun stk/ac-show-help ()
+  "show docs for symbol at point or at beginning of list if not on a symbol"
+  (interactive)
+  (let ((s (save-excursion
+             (or (symbol-at-point)
+                 (progn (backward-up-list)
+                        (forward-char)
+                        (symbol-at-point))))))
+    (let ((doc-string (ac-symbol-documentation s)))
+      (if doc-string
+          (if ac-quick-help-prefer-x
+              (pos-tip-show doc-string 'popup-tip-face (point) nil -1)
+            (popup-tip doc-string :point (point)))
+        (message "No documentation for %s" s)
+        ))))
+(define-key lisp-mode-shared-map (kbd "<f1>") 'stk/ac-show-help)
+(define-key lisp-mode-shared-map (kbd "C-c C-h") 'stk/ac-show-help)
 
 ;; ** back-button
-(setq back-button-global-backward-keystrokes '("C-x w"))
-(setq back-button-global-forward-keystrokes '("C-x e"))
-(setq back-button-local-backward-keystrokes '("C-x s"))
-(setq back-button-local-forward-keystrokes '("C-x d"))
 (global-set-key (kbd "C-3") 'back-button-local-backward)
 (global-set-key (kbd "C-4") 'back-button-local-forward)
 (back-button-mode 1)
@@ -745,10 +767,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (require 'iedit)
 (setq iedit-unmatched-lines-invisible-default t)
 
-;; ** interaction-log
-(require 'interaction-log)
-(interaction-log-mode +1)
-(global-set-key (kbd "<f1>") (lambda () (interactive) (display-buffer ilog-buffer-name)))
 ;; ** isearch+
 (eval-after-load "isearch" '(require 'isearch+))
 
@@ -892,24 +910,36 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
 (add-hook 'outline-minor-mode-hook (lambda () (require 'outline-magic)))
 
+;; paredit
+;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+;; (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+;; (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+;; (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+;; (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+;; (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+;; (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
 
-;; ** php-mode from melpa
+;; ** php-mode
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
 (add-to-list 'ac-sources 'ac-source-php-completion-patial)
-(setq php-manual-path "/usr/share/doc/php-doc/html/")
-;; php-align, not in repo
-(add-hook 'php-mode-hook
-          (lambda ()
-            (when (require 'php-documentor nil t)
-              (local-set-key (kbd "C-c p") 'php-documentor-dwim)
-            )
-            (when (require 'php-align nil t)
-              (php-align-setup)
-              )
-            (eldoc-mode 1)
-            )
-          )
+(let ((manual "/usr/share/doc/php-doc/html/"))
+  (when (file-readable-p manual)
+    (setq php-manual-path manual)
+    ))
+
+(defun setup-php-mode ()
+  ;; (require 'paredit-c nil t)
+  ;; (paredit-c-mode 1)
+  (require 'php-documentor nil t)
+  (local-set-key (kbd "C-c p") 'php-documentor-dwim)
+  (require 'php-align nil t)
+  (php-align-setup)
+  (php-eldoc-enable)
+  )
+
+(add-hook 'php-mode-hook 'setup-php-mode)
+
 ;; die me some var_dump quickly
 (defun var_dump-die (start end)
   (interactive "r")
@@ -975,8 +1005,16 @@ Dmitriy Igrishin's patched version of comint.el."
             (robe-mode 1)
             (push 'ac-source-robe ac-sources)))
 
+;; ** saveplace
+(require 'saveplace)
+(setq-default save-place t)
+
 ;; ** session
 ;; (add-hook 'after-init-hook 'session-initialize)
+
+;; ** smartparens
+(require 'smartparens-config)
+(smartparens-global-mode t)
 
 ;; ** sgml
 (setq sgml-basic-offset 4)
