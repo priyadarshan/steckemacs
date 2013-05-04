@@ -37,6 +37,8 @@ I only describe my custom key combinations currently. To learn the standard Emac
 **General**                | `C-c X`   | kill emacs (including the daemon if it is running)
                            | `C-S-h`   | show current keyboard shortcuts, allows search too
                            | `C-S-l`   | list available packages
+                           | `C-h C-f` | go to the definition of the function under cursor
+                           | `C-h C-v` | go to the definition of the variable under cursor
                            | `f1`      | show interaction log (detailed lists of all the executed commands)
 **Appearance**             | `C-c m`   | show/hide menu
                            | `C--`     | decrease the font size
@@ -46,6 +48,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `F6`      | delete the current buffer
                            | `F8`      | switch to the "last" buffer
                            | `C-c r`   | revert a buffer to the saved state
+                           | `sc`      | switch to \*scratch\* buffer
                            | `C-c n`   | copy the full path of the current file to the clipboard
 **Windows / Frames**       | `C-0`     | previous window
                            | `C-9`     | next window

@@ -1,5 +1,4 @@
 ;;; .emacs.el --- steckemacs
-
 ;; * header
 
 ;; Copyright 2013, Steckerhalter
@@ -83,9 +82,9 @@
         (:name rcirc-color
                :type http
                :url "http://www.emacswiki.org/emacs/download/rcirc-color.el")
-        (:name paredit-c
+        (:name ac-php-doc
                :type http
-               :url "https://raw.github.com/dandavison/paredit-c/master/paredit-c.el")
+               :url "https://raw.github.com/steckerhalter/ac-php-doc/master/ac-php-doc.el")
         ))
 
 ;; need to install package.el for emacs below 24
@@ -163,7 +162,6 @@
             org
             outline-magic
             outlined-elisp-mode
-;            paredit
             php-eldoc
             php-mode
             popup
@@ -171,7 +169,6 @@
             rainbow-mode
             robe
             restclient
-            session
             slime-js
             undo-tree
             visual-regexp
@@ -221,6 +218,9 @@
 (global-set-key (kbd "C-S-l") 'package-list-packages-no-fetch)
 (global-set-key (kbd "C-c d")  'ispell-change-dictionary)
 (key-chord-define-global "cg" 'customize-group)
+(global-set-key (kbd "C-h C-f") 'find-function-at-point)
+(global-set-key (kbd "C-h C-v") 'find-variable-at-point)
+
 ;; ** appearance
 (global-set-key (kbd "C-c m") 'menu-bar-mode)
 (global-set-key (kbd "C--") 'text-scale-decrease)
@@ -240,6 +240,7 @@
 (global-set-key (kbd "<M-right>") 'buf-move-right)
 (key-chord-define-global "eb" 'eval-buffer)
 (key-chord-define-global "sv" 'save-buffer)
+(key-chord-define-global "sc" (lambda () (interactive)(switch-to-buffer "*scratch*")))
 
 ;; ** window / frame
 (global-set-key (kbd "C-0") (lambda () (interactive) (select-window (previous-window)))) ;select prev window
@@ -521,6 +522,13 @@ Dmitriy Igrishin's patched version of comint.el."
         ;; comint's "Type space to flush" swallows space. put it back in.
         (setq unread-command-events (listify-key-sequence " "))))
 
+;; bury *scratch* buffer instead of kill it
+(defadvice kill-buffer (around kill-buffer-around-advice activate)
+  (let ((buffer-to-kill (ad-get-arg 0)))
+    (if (equal buffer-to-kill "*scratch*")
+        (bury-buffer)
+      ad-do-it)))
+
 ;; * modes
 
 ;; ** auctex-mode
@@ -542,11 +550,12 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
+(setq ac-auto-show-menu 0.5)
 (setq ac-quick-help-height 50)
 (setq ac-quick-help-delay 1)
 (setq ac-use-fuzzy t)
 (setq ac-disable-faces nil)
-(setq ac-quick-help-prefer-x t)
+(setq ac-quick-help-prefer-x nil)
 (global-set-key (kbd "C-7") 'auto-complete)
 (require 'pos-tip)
 ;; from http://emacswiki.org/emacs/AutoComplete
@@ -589,7 +598,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** conf-mode
 (add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
-
+(add-to-list 'ac-modes 'conf-mode)
 ;; ** deft
 (setq
  deft-extension "org"
@@ -872,6 +881,11 @@ Dmitriy Igrishin's patched version of comint.el."
                             ))
 
 ;; ** org-mode
+;; if notes.org exists, startup emacs with this file
+(let ((todo "~/org/todo.org"))
+  (when (file-readable-p todo)
+    (setq initial-buffer-choice todo)
+  ))
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
@@ -885,6 +899,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
 )
+(key-chord-define-global "89" 'org-todo-list)
 
 ;; ** outline-mode
 (require 'outlined-elisp-mode)
@@ -910,92 +925,68 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
 (add-hook 'outline-minor-mode-hook (lambda () (require 'outline-magic)))
 
-;; paredit
-;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-;; (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-;; (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-;; (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-;; (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-;; (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-;; (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-
 ;; ** php-mode
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
 
 (let ((manual "/usr/share/doc/php-doc/html/"))
   (when (file-readable-p manual)
-    (setq php-manual-path manual)
-
-    (when (executable-find "html2text")
-      (setq ac-php-source-p t)
-      ;; auto-complete php-doc (when manual is available)
-      (defun ac-php-doc (symbol-name)
-        (let ((symbol-name (substring-no-properties symbol-name))
-              file begin doc)
-          (setq file (expand-file-name (format "function.%s.html" (replace-regexp-in-string "_" "-" symbol-name)) php-manual-path))
-          (when (file-readable-p file)
-            (with-temp-buffer
-              (insert (shell-command-to-string (concat "html2text -utf8 -style compact " file)))
-              (beginning-of-buffer)
-              (search-forward "Description")
-              (next-line)
-              (beginning-of-line)
-              (delete-region (point) (point-min))
-              (search-forward "Examples")
-              (previous-line)
-              (if (> (line-number-at-pos) 50) (goto-line 50))
-              (beginning-of-line)
-              (delete-region (point) (point-max))
-              (buffer-string)
-              ))))
-
-      (defvar ac-source-php-doc
-        '((candidates . ac-buffer-dictionary)
-          (document . ac-php-doc)
-          (symbol . "d")
-          )
-        "Auto completion source for PHP quick help documentation "
-        )
-      ))
-  )
+    (setq php-manual-path manual)))
 
 (defun setup-php-mode ()
-  ;; (require 'paredit-c nil t)
-  ;; (paredit-c-mode 1)
   (require 'php-documentor nil t)
   (local-set-key (kbd "C-c p") 'php-documentor-dwim)
   (require 'php-align nil t)
   (php-align-setup)
   (php-eldoc-enable)
-  (when ac-php-source-p (add-to-list 'ac-sources 'ac-source-php-doc))
+  (set-up-php-ac)
   )
 
 (add-hook 'php-mode-hook 'setup-php-mode)
 
 ;; die me some var_dump quickly
-(defun var_dump-die (start end)
-  (interactive "r")
-  (if mark-active
-    (progn
-      (goto-char end)
-      (insert "));")
-      (goto-char start)
-      (insert "die(var_dump("))
-    (insert "die(var_dump());")))
-
+(defun var_dump-die ()
+  (interactive)
+  (let ((expression (if (region-active-p)
+                        (buffer-substring (region-beginning) (region-end))
+                      (sexp-at-point)))
+        (line (thing-at-point 'line))
+        (pre "die(var_dump(")
+        (post "));")
+        )
+    (if expression
+        (progn
+          (beginning-of-line)
+          (if (string-match "return" line)
+              (progn
+                (newline)
+                (previous-line))
+            (next-line)
+            (newline)
+            (previous-line)
+            )
+          (insert pre)
+          (insert (format "%s" expression))
+          (insert post))
+      ()
+      (insert pre)
+      (insert post)
+      (backward-char (length post))
+      )))
 (key-chord-define-global "bv" 'var_dump-die)
 (key-chord-define-global "pm" 'php-mode)
 
-(defun var_dump (start end)
-  (interactive "r")
-  (if mark-active
+(defun var_dump ()
+  (interactive)
+  (if (region-active-p)
     (progn
-      (goto-char end)
+      (goto-char (region-end))
       (insert ");")
-      (goto-char start)
+      (goto-char (region-beginning))
       (insert "var_dump("))
-    (insert "var_dump();")))
+    (insert "var_dump();")
+    (backward-char 3)
+    ))
 
 (key-chord-define-global "dv" 'var_dump)
 
@@ -1041,9 +1032,6 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** saveplace
 (require 'saveplace)
 (setq-default save-place t)
-
-;; ** session
-;; (add-hook 'after-init-hook 'session-initialize)
 
 ;; ** smartparens
 (require 'smartparens-config)
