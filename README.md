@@ -69,6 +69,10 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `,.`      | Delete the current frame
 **Movement / Selections**  | `M-p`     | move to next expression
                            | `M-n`     | move to previous expression
+                           | `C-\`     | select previous "thing"
+                           | `C-]`     | select next "thing"
+                           | `C-{`     | select/exchange previous "thing"
+                           | `C-}`     | select/exchange next "thing"
                            | `C-3`     | go to last automatically saved position
                            | `C-4`     | go to next automatically saved  position
                            | `M-2`     | show all symbols like the one cursor is located at

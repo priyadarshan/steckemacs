@@ -266,8 +266,6 @@
 (key-chord-define-global ",." 'delete-frame)
 
 ;; ** movement / selections
-(global-set-key (kbd "M-p") 'backward-sexp)
-(global-set-key (kbd "M-n") 'forward-sexp)
 (global-set-key (kbd "M-i") 'er/expand-region)
 (global-set-key (kbd "M-I") 'er/mark-inside-pairs)
 (global-set-key (kbd "M-o") 'er/contract-region)
@@ -1040,6 +1038,12 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** smartparens
 (require 'smartparens-config)
 (smartparens-global-mode t)
+(define-key sp-keymap (kbd "M-p") 'sp-backward-sexp)
+(define-key sp-keymap (kbd "M-n") 'sp-forward-sexp)
+(define-key sp-keymap (kbd "C-{") 'sp-select-previous-thing-exchange)
+(define-key sp-keymap (kbd "C-}") 'sp-select-next-thing-exchange)
+(define-key sp-keymap (kbd "C-\\") 'sp-select-previous-thing)
+(define-key sp-keymap (kbd "C-]") 'sp-select-next-thing)
 
 ;; ** sgml
 (setq sgml-basic-offset 4)
