@@ -881,10 +881,14 @@ Dmitriy Igrishin's patched version of comint.el."
                             ))
 
 ;; ** org-mode
-;; if notes.org exists, startup emacs with this file
+;; if todo.org exists, startup emacs with the org todo list
 (let ((todo "~/org/todo.org"))
   (when (file-readable-p todo)
-    (setq initial-buffer-choice todo)
+    (setq initial-buffer-choice (lambda ()
+                                  (org-todo-list)
+                                  (delete-other-windows)
+                                  (current-buffer)
+                                  ))
   ))
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key (kbd "C-c a") 'org-agenda)
