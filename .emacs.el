@@ -37,8 +37,6 @@
 
 ;;; Code:
 
-(setq emacs<24 (if (< emacs-major-version 24) t nil))
-
 ;; * load-path
 
 ;; http://emacswiki.org/emacs/LoadPath
@@ -89,13 +87,6 @@
                :type http
                :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
         ))
-
-;; need to install package.el for emacs below 24
-(when emacs<24
-  (add-to-list 'el-get-sources
-               '(:name package
-                       :type http
-                       :url "http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el")))
 
 (setq my-el-get-packages
       (append
@@ -182,11 +173,6 @@
             yari
             yasnippet)
           )
-
-    ;; excluded packages for emacs below 24
-    (when emacs<24
-      (setq elpa-packages (set-difference elpa-packages '(erc-hl-nicks js2-mode)))
-      )
 
     (defun elpa-packages-installed-p ()
       (loop for p in elpa-packages
@@ -612,19 +598,17 @@ Dmitriy Igrishin's patched version of comint.el."
  deft-text-mode 'org-mode)
 
 ;; ** diff-hl
-(unless emacs<24
-  (global-diff-hl-mode 1)
-  (defun diff-hl-update-each-buffer ()
-    (interactive)
-    (mapc (lambda (buffer)
-            (condition-case nil
-                (with-current-buffer buffer
-                  (diff-hl-update))
-              (buffer-read-only nil)))
-          (buffer-list)))
-  (defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
-    (progn (diff-hl-update-each-buffer)))
-  )
+(global-diff-hl-mode 1)
+(defun diff-hl-update-each-buffer ()
+  (interactive)
+  (mapc (lambda (buffer)
+          (condition-case nil
+              (with-current-buffer buffer
+                (diff-hl-update))
+            (buffer-read-only nil)))
+        (buffer-list)))
+(defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
+  (progn (diff-hl-update-each-buffer)))
 
 ;; ** dired+
 (toggle-diredp-find-file-reuse-dir 1)
@@ -742,7 +726,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** helm
 (require 'helm-config)
 (setq enable-recursive-minibuffers t)
-(when (not emacs<24) (helm-mode 1))
+(helm-mode 1)
 (helm-gtags-mode 1)
 (setq helm-idle-delay 0.1)
 (setq helm-input-idle-delay 0.1)

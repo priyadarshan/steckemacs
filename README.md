@@ -4,7 +4,7 @@ An Emacs configuration that integrates around 60 modes (packages). Stock Emacs i
 
 If you want to know more about how that works, read my blog entry here:  http://postmomentum.ch/blog/201304/steckemacs
 
-**To use this setup please use Emacs 24 or later. Older versions might not work properly.**
+**To use this setup please use Emacs 24 or later. Older versions do not work properly.**
 
 ## Installation
 
