@@ -85,6 +85,9 @@
         (:name ac-php-doc
                :type http
                :url "https://raw.github.com/steckerhalter/ac-php-doc/master/ac-php-doc.el")
+        (:name eval-sexp-fu
+               :type http
+               :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
         ))
 
 ;; need to install package.el for emacs below 24
@@ -140,6 +143,7 @@
             grandshell-theme
             haskell-mode
             hackernews
+            highlight
             helm
             helm-descbinds
             helm-c-yasnippet
@@ -286,7 +290,6 @@
 (key-chord-define-global "ac" 'align-current)
 (key-chord-define-global "wd" 'kill-word)
 (key-chord-define-global "wr" 'kill-whole-line)
-(key-chord-define-global "90" 'overwrite-mode)
 (global-set-key (kbd "C-c q") 'auto-fill-mode) ;toggles word wrap
 
 ;; ** searching / grepping
@@ -625,6 +628,18 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** dired+
 (toggle-diredp-find-file-reuse-dir 1)
+
+;; ** eval-sexp-fu
+(require 'highlight)
+(require 'eval-sexp-fu)
+(setq eval-sexp-fu-flash-duration 0.4)
+(turn-on-eval-sexp-fu-flash-mode)
+(key-chord-define lisp-interaction-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
+(key-chord-define emacs-lisp-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
+(define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-list)
+(define-key lisp-interaction-mode-map (kbd "S-C-c S-C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
+(define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-list)
+(define-key emacs-lisp-mode-map (kbd "S-C-c S-C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
 
 ;; ** ecb
 (setq
