@@ -621,10 +621,10 @@ Dmitriy Igrishin's patched version of comint.el."
 (turn-on-eval-sexp-fu-flash-mode)
 (key-chord-define lisp-interaction-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
 (key-chord-define emacs-lisp-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
-(define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-list)
-(define-key lisp-interaction-mode-map (kbd "S-C-c S-C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
-(define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-list)
-(define-key emacs-lisp-mode-map (kbd "S-C-c S-C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
+(define-key lisp-interaction-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
+(define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
+(define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
+(define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
 
 ;; ** ecb
 (setq
