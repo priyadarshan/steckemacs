@@ -212,6 +212,7 @@
 (key-chord-define-global "cg" 'customize-group)
 (global-set-key (kbd "C-h C-f") 'find-function-at-point)
 (global-set-key (kbd "C-h C-v") 'find-variable-at-point)
+(global-set-key (kbd "C-c C-w") 'browse-url-at-point)
 
 ;; ** appearance
 (global-set-key (kbd "C-c m") 'menu-bar-mode)
@@ -300,8 +301,6 @@
 (setq
  inhibit-startup-message t
  backup-directory-alist `((".*" . ,temporary-file-directory)) ;don't clutter my fs and put backups into tmp
- browse-url-browser-function 'browse-url-generic ;default browser
- browse-url-generic-program "x-www-browser"      ;to open urls
  auto-save-default nil              ;disable auto save
  require-final-newline t            ;auto add newline at the end of file
  column-number-mode t               ;show the column number
