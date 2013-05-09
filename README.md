@@ -84,9 +84,6 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `M-I`     | select stuff inside "pairs" e.g. inside ()
                            | `C->`     | add cursor downwards (try to get next occurrence if sth. is marked)
                            | `C-<`     | add cursor upwards (try to get previous occurrence if sth. is marked)
-**Undo/Redo**              | `C-/`     | Undo
-                           | `C-'`     | Redo
-                           | `C-,`     | Visualize undo/redo tree
 **Completion**             | `C-7`     | Trigger auto-completion explicitly (with fuzzy matching)
 **Formatting**             | `C-c w`   | cleanup whitespace
                            | `C-c j`   | join two lines
@@ -101,6 +98,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `rg`      | grep through current project
                            | `ok`      | show occurrences of a string in current project
                            | `aw`      | ack through current project
+                           | `ag`      | ag through current project
                            | `C-c g`   | magit status - manual: http://magit.github.io/magit/
                            | `C-c l`   | magit log
 **Code/Spell checking**    | `cf`      | toggle code checking (flycheck)

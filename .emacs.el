@@ -119,6 +119,7 @@
 
           '(ack-and-a-half
             ac-slime
+            ag
             auctex
             auto-install
             auto-complete
@@ -128,6 +129,7 @@
             clojure-mode
             diff-hl
             dired+
+            edebug-x
             erc-hl-nicks
             expand-region
             fic-ext-mode
@@ -170,7 +172,6 @@
             robe
             restclient
             slime-js
-            undo-tree
             visual-regexp
             volatile-highlights
             yaml-mode
@@ -529,6 +530,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; * modes
 
+;; ** ag
+(key-chord-define-global "ag" 'ag-project)
+
 ;; ** auctex-mode
 (setq TeX-PDF-mode t)
 (setq TeX-parse-self t)
@@ -763,7 +767,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq ido-enable-flex-matching t
       ido-auto-merge-work-directories-length -1
       ido-create-new-buffer 'always
-      ido-use-filename-at-point 'guess
       ido-everywhere t
       ido-default-buffer-method 'selected-window
       ido-max-prospects 32
@@ -883,13 +886,12 @@ Dmitriy Igrishin's patched version of comint.el."
 (let ((todo "~/org/todo.org"))
   (when (file-readable-p todo)
     (setq initial-buffer-choice (lambda ()
-                                  (org-todo-list)
+                                  (org-agenda nil "n")
                                   (delete-other-windows)
                                   (current-buffer)
                                   ))
   ))
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
 (setq
   appt-display-mode-line t     ; show in the modeline
@@ -901,7 +903,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
 )
-(key-chord-define-global "89" 'org-todo-list)
+
+(global-set-key (kbd "C-c A") 'org-agenda)
+(global-set-key (kbd "C-c a") (lambda () (interactive) (org-agenda nil "n")))
 
 ;; ** outline-mode
 (require 'outlined-elisp-mode)
@@ -1070,14 +1074,6 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** tempo
 (require 'tempo nil t)
-
-;; ** undo-tree
-(global-undo-tree-mode 1)
-(global-set-key (kbd "C-'") 'undo-tree-redo)
-(global-set-key (kbd "C-,") 'undo-tree-visualize)
-(global-set-key (kbd "C-\"") 'undo-tree-visualize)
-(setq undo-tree-visualizer-timestamps t)
-
 
 ;; ** uniqify
 (require 'uniquify)
