@@ -614,16 +614,18 @@ Dmitriy Igrishin's patched version of comint.el."
 (toggle-diredp-find-file-reuse-dir 1)
 
 ;; ** eval-sexp-fu
-(require 'highlight)
-(require 'eval-sexp-fu)
-(setq eval-sexp-fu-flash-duration 0.4)
-(turn-on-eval-sexp-fu-flash-mode)
-(key-chord-define lisp-interaction-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
-(key-chord-define emacs-lisp-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
-(define-key lisp-interaction-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
-(define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
-(define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
-(define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
+(when (and (>= emacs-major-version 24) (>= emacs-minor-version 3))
+  (require 'highlight)
+  (require 'eval-sexp-fu)
+  (setq eval-sexp-fu-flash-duration 0.4)
+  (turn-on-eval-sexp-fu-flash-mode)
+  (key-chord-define lisp-interaction-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
+  (key-chord-define emacs-lisp-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
+  (define-key lisp-interaction-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
+  (define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
+  (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
+  (define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
+)
 
 ;; ** ecb
 (setq
