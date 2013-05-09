@@ -167,6 +167,7 @@
             robe
             restclient
             slime-js
+            smartparens
             visual-regexp
             volatile-highlights
             yaml-mode
