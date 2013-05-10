@@ -123,7 +123,7 @@
             clojure-mode
             diff-hl
             dired+
-            edebug-x
+;            edebug-x
             erc-hl-nicks
             expand-region
             fic-ext-mode
