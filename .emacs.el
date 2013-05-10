@@ -123,7 +123,6 @@
             clojure-mode
             diff-hl
             dired+
-;            edebug-x
             erc-hl-nicks
             expand-region
             fic-ext-mode
@@ -446,13 +445,16 @@ Call a second time to restore the original window configuration."
                      "^'\\|'\n" ""
                      (shell-command-to-string (concat "autojump --bash --completion " query))))
                    "\n" t)))
-             (if (> (length results) 2)
+             (if (> (length results) 1)
                  (ido-completing-read "Dired: " results nil t)
                (car results)))
            ))
-      (if (file-readable-p dir)
-          (dired dir)
-        (message "Directory %s doesn't exist" dir))
+      (if dir
+          (if (file-readable-p dir)
+              (dired dir)
+            (message "Directory %s doesn't exist" dir))
+        (message "No directory found")
+        )
       ))
 
   (global-set-key (kbd "C-6") 'ido-autojump)
