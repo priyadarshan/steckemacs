@@ -155,6 +155,8 @@
             multi-web-mode
             multiple-cursors
             nav
+            nrepl
+            nrepl-eval-sexp-fu
             org
             outline-magic
             outlined-elisp-mode
@@ -883,6 +885,19 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'mail-mode-hook (lambda ()
                             (flyspell-mode 1)
                             ))
+
+;; ** nrepl
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(require 'ac-nrepl)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(add-to-list 'ac-modes 'nrepl-mode)
+(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
+
+;; ** nrepl-eval-sexp-fu
+(require 'highlight)
+(require 'nrepl-eval-sexp-fu)
+(setq nrepl-eval-sexp-fu-flash-duration 0.4)
 
 ;; ** org-mode
 ;; if todo.org exists, startup emacs with the org todo list
