@@ -31,7 +31,7 @@ When I write `fg` as a key combo it means you would have to press `f` and `g` at
 I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial `C-h t`, use `C-S-h` or `M-x` to see/filter the available commands/shortcuts.
 
 **the list is not complete yet, work ingress**
-     Topic              |   Combo   | Description
+     Topic                 |   Combo   | Description
 ---------------------------|-----------|----------------------------------------------------------------------
 **General**                | `C-c X`   | kill emacs (including the daemon if it is running)
                            | `C-S-h`   | show current keyboard shortcuts, allows search too
