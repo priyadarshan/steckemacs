@@ -112,6 +112,7 @@
     (setq elpa-packages
 
           '(ack-and-a-half
+            ac-nrepl
             ac-slime
             ag
             auctex
@@ -888,6 +889,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** nrepl
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(setq nrepl-popup-stacktraces nil)
+(setq nrepl-popup-stacktraces-in-repl t)
+
 (require 'ac-nrepl)
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
