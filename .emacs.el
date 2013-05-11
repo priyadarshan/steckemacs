@@ -124,6 +124,7 @@
             erc-hl-nicks
             expand-region
             fic-ext-mode
+            flex-isearch
             flycheck
             geben
             gist
@@ -671,6 +672,10 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** fic-ext-mode
 (add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
+
+;; ** flex-isearch
+(setq flex-isearch-auto 'on-failed)
+(flex-isearch-mode 1)
 
 ;; ** flycheck-mode
 (add-hook 'php-mode-hook 'flycheck-mode)
