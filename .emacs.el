@@ -249,8 +249,6 @@
 (global-set-key (kbd "<C-right>") 'enlarge-window)
 (global-set-key (kbd "<C-up>") 'shrink-window-horizontally)
 (global-set-key (kbd "<C-down>") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-8") (lambda () (interactive) (other-frame -1)))
-(global-set-key (kbd "C-S-8") (lambda () (interactive) (other-frame 1)))
 (key-chord-define-global "jo" 'delete-window)
 (key-chord-define-global "fw" 'delete-other-windows)
 (key-chord-define-global "sf" 'split-window-horizontally)
@@ -258,9 +256,6 @@
 (key-chord-define-global ",." 'delete-frame)
 
 ;; ** movement / selections
-(global-set-key (kbd "M-i") 'er/expand-region)
-(global-set-key (kbd "M-I") 'er/mark-inside-pairs)
-(global-set-key (kbd "M-o") 'er/contract-region)
 (key-chord-define-global "sd" 'move-beginning-of-line)
 (key-chord-define-global "kl" 'move-end-of-line)
 (key-chord-define-global "wf" 'forward-word)
@@ -670,6 +665,10 @@ Dmitriy Igrishin's patched version of comint.el."
           '(lambda ()
              (setq erc-fill-column (- (window-width) 2))))
 
+;; ** expand-region
+(global-set-key (kbd "C-8") 'er/expand-region)
+(global-set-key (kbd "M-8") 'er/contract-region)
+
 ;; ** fic-ext-mode
 (add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
 
@@ -712,7 +711,6 @@ Dmitriy Igrishin's patched version of comint.el."
 ;(global-set-key (kbd "M-3") 'helm-etags-select)
 (global-set-key (kbd "M-5") 'helm-gtags-select)
 (global-set-key (kbd "M-7") 'helm-show-kill-ring)
-(global-set-key (kbd "M-8") (lambda () (interactive) (let ((current-prefix-arg t)) (helm-do-grep))))
 (global-set-key (kbd "M-9") 'helm-occur)
 (global-set-key (kbd "M--") 'helm-resume)
 (global-set-key (kbd "C-S-h") 'helm-descbinds)
@@ -1015,12 +1013,14 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** smartparens
 (require 'smartparens-config)
 (smartparens-global-mode t)
-(define-key sp-keymap (kbd "M-p") 'sp-backward-sexp)
-(define-key sp-keymap (kbd "M-n") 'sp-forward-sexp)
+(define-key sp-keymap (kbd "M-o") 'sp-backward-sexp)
+(define-key sp-keymap (kbd "M-i") 'sp-forward-sexp)
 (define-key sp-keymap (kbd "C-{") 'sp-select-previous-thing-exchange)
 (define-key sp-keymap (kbd "C-}") 'sp-select-next-thing-exchange)
 (define-key sp-keymap (kbd "C-\\") 'sp-select-previous-thing)
 (define-key sp-keymap (kbd "C-]") 'sp-select-next-thing)
+;; "fix"" highlight issue in scratch buffer
+(custom-set-faces '(sp-pair-overlay-face ((t ()))))
 
 ;; ** sgml
 (setq sgml-basic-offset 4)

@@ -67,8 +67,8 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `M-left`  | move buffer to left window
                            | `M-right` | move buffer to right window
                            | `,.`      | Delete the current frame
-**Movement / Selections**  | `M-p`     | move to next expression
-                           | `M-n`     | move to previous expression
+**Movement / Selections**  | `M-i`     | move to next expression
+                           | `M-o`     | move to previous expression
                            | `C-\`     | select previous "thing"
                            | `C-]`     | select next "thing"
                            | `C-{`     | select/exchange previous "thing"
@@ -79,9 +79,8 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `M-3`     | previous symbol like the one the cursor is on
                            | `M-4`     | next symbol like the one the cursor is on
                            | `i9`      | toggle automatic identation
-                           | `M-i`     | select symbol under cursor, pressing again will smartly expand the region
-                           | `M-o`     | narrow the selection again
-                           | `M-I`     | select stuff inside "pairs" e.g. inside ()
+                           | `C-8`     | select symbol under cursor, pressing again will smartly expand the region
+                           | `M-8`     | narrow the selection again
                            | `C->`     | add cursor downwards (try to get next occurrence if sth. is marked)
                            | `C-<`     | add cursor upwards (try to get previous occurrence if sth. is marked)
 **Elisp Evaluation**       | `90`      | evaluate list (with visual feedback)
