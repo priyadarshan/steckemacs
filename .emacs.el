@@ -115,12 +115,9 @@
             ac-nrepl
             ac-slime
             ag
-            auctex
-            auto-install
             auto-complete
             back-button
             buffer-move
-            calfw
             clojure-mode
             diff-hl
             dired+
@@ -148,7 +145,6 @@
             js2-mode
             json-mode
             key-chord
-            lorem-ipsum
             magit
             markdown-mode+
             mmm-mode
@@ -161,6 +157,7 @@
             org
             outline-magic
             outlined-elisp-mode
+            paredit
             php-eldoc
             php-mode
             popup
@@ -578,20 +575,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "C-4") 'back-button-local-forward)
 (back-button-mode 1)
 
-;; ** calfw
-(require 'calfw-ical)
-(require 'calfw-org)
-(defun my-open-calendar ()
-  (interactive)
-  (cfw:open-calendar-buffer
-   :contents-sources
-   (list
-    (cfw:org-create-source "Green")  ; orgmode source
-    (cfw:ical-create-source "gcal" gcal-url "Gray")  ; ICS source1
-   )))
-(key-chord-define-global "cv" 'my-open-calendar)
-(global-set-key (kbd "C-c C") 'my-open-calendar)
-
 ;; ** conf-mode
 (add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
 (add-to-list 'ac-modes 'conf-mode)
@@ -620,7 +603,6 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** eval-sexp-fu
 (when (and (>= emacs-major-version 24) (>= emacs-minor-version 3))
-  (require 'highlight)
   (require 'eval-sexp-fu)
   (setq eval-sexp-fu-flash-duration 0.4)
   (turn-on-eval-sexp-fu-flash-mode)
@@ -688,22 +670,6 @@ Dmitriy Igrishin's patched version of comint.el."
           '(lambda ()
              (setq erc-fill-column (- (window-width) 2))))
 
-(defun rgr/ido-erc-buffer()
-  (interactive)
-  (switch-to-buffer
-   (ido-completing-read "Channel:"
-                        (save-excursion
-                          (delq
-                           nil
-                           (mapcar (lambda (buf)
-                                     (when (buffer-live-p buf)
-                                       (with-current-buffer buf
-                                         (and (eq major-mode 'erc-mode)
-                                              (buffer-name buf)))))
-                                   (buffer-list)))))))
-
-(global-set-key (kbd "C-c b") 'rgr/ido-erc-buffer)
-
 ;; ** fic-ext-mode
 (add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
 
@@ -769,6 +735,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "M-4") (lambda () (interactive) (highlight-symbol-jump 1)))
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
+;; ** html-mode
+(add-to-list 'ac-modes 'html-mode)
+
 ;; ** ido-mode
 (setq ido-enable-flex-matching t
       ido-auto-merge-work-directories-length -1
@@ -803,13 +772,6 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** json-mode
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
-
-;; ** lorem-ipsum
-(require 'lorem-ipsum)
-(global-unset-key (kbd "C-x l"))
-(global-set-key (kbd "C-x l l") 'Lorem-ipsum-insert-list)
-(global-set-key (kbd "C-x l p") 'Lorem-ipsum-insert-paragraphs)
-(global-set-key (kbd "C-x l s") 'Lorem-ipsum-insert-sentences)
 
 ;; ** magit
 (global-set-key (kbd "C-c g") 'magit-status)
@@ -861,26 +823,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-*") 'mc/mark-all-like-this)
 
-;; ** multi-web-mode
-;; (when (require 'multi-web-mode nil t)
-;;   (setq mweb-default-major-mode 'html-mode)
-;;   (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-;;                     (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-;;                     (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
-;;   (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-;;   (multi-web-global-mode 1)
-;;   )
-
-(add-to-list 'ac-modes 'html-mode)
-(dolist (hook '(css-mode-hook
-                html-mode-hook
-                js-mode-hook))
-  (add-hook hook (lambda ()
-                   (when (fboundp 'slime-js-minor-mode)
-                     (add-hook 'after-save-hook 'slime-js-reload nil 'make-it-local))
-                   )
-            ))
-
 ;; ** mutt, load mail-mode
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 (add-hook 'mail-mode-hook (lambda ()
@@ -899,7 +841,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
 ;; ** nrepl-eval-sexp-fu
-(require 'highlight)
 (require 'nrepl-eval-sexp-fu)
 (setq nrepl-eval-sexp-fu-flash-duration 0.4)
 
@@ -1060,6 +1001,16 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** saveplace
 (require 'saveplace)
 (setq-default save-place t)
+
+;; ** slime-js
+(dolist (hook '(css-mode-hook
+                html-mode-hook
+                js-mode-hook))
+  (add-hook hook (lambda ()
+                   (when (fboundp 'slime-js-minor-mode)
+                     (add-hook 'after-save-hook 'slime-js-reload nil 'make-it-local))
+                   )
+            ))
 
 ;; ** smartparens
 (require 'smartparens-config)
