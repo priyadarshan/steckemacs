@@ -900,7 +900,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** php-mode
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
-
+(setq php-mode-coding-style "Symfony2")
 (let ((manual "/usr/share/doc/php-doc/html/"))
   (when (file-readable-p manual)
     (setq php-manual-path manual)))
