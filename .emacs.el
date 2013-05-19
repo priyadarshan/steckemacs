@@ -118,6 +118,7 @@
             auto-complete
             back-button
             buffer-move
+            creole-mode
             clojure-mode
             diff-hl
             dired+
@@ -721,9 +722,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "C-S-h") 'helm-descbinds)
 (global-set-key (kbd "C-c h") 'helm-projectile)
 (key-chord-define-global "fw" 'helm-find-files)
-(key-chord-define-global "fh" 'helm-for-files)
 (key-chord-define-global "hg" (lambda () (interactive) (let ((current-prefix-arg t)) (helm-do-grep))))
-(key-chord-define-global "hh" 'helm-descbinds)
 (key-chord-define-global "lo" 'helm-locate)
 (key-chord-define-global "34" 'helm-imenu)
 
