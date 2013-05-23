@@ -865,6 +865,8 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
 )
+;; add state to the sorting strategy of todo
+(setcdr (assq 'todo org-agenda-sorting-strategy) '(priority-down todo-state-up category-keep))
 
 (global-set-key (kbd "C-c A") 'org-agenda)
 (global-set-key (kbd "C-c a") (lambda () (interactive) (org-agenda nil "n")))
