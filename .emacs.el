@@ -631,7 +631,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq erc-timestamp-format "%H:%M "
       erc-fill-prefix "      "
       erc-insert-timestamp-function 'erc-insert-timestamp-left)
-(erc-fill-mode nil)
+(setq erc-modules (delq 'fill erc-modules))
 (setq erc-interpret-mirc-color t)
 (setq erc-kill-buffer-on-part t)
 (setq erc-kill-queries-on-quit t)
