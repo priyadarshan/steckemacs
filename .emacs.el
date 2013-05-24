@@ -867,6 +867,17 @@ Dmitriy Igrishin's patched version of comint.el."
 )
 ;; add state to the sorting strategy of todo
 (setcdr (assq 'todo org-agenda-sorting-strategy) '(priority-down todo-state-up category-keep))
+;; define todo states: set time stamps one waiting, delegated and done
+(setq org-todo-keywords
+      '((sequence
+         "TODO(t)"
+         "REMINDER(r)"
+         "WAITING(w!)"
+         "DELEGATED(g!)"
+         "SOMEDAY(s)"
+         "|"
+         "DONE(d!)"
+         )))
 
 (global-set-key (kbd "C-c A") 'org-agenda)
 (global-set-key (kbd "C-c a") (lambda () (interactive) (org-agenda nil "n")))
