@@ -123,6 +123,7 @@
             diff-hl
             dired+
             erc-hl-nicks
+            evil
             expand-region
             fic-ext-mode
             flex-isearch
@@ -321,8 +322,6 @@
 (show-paren-mode t)                  ;visualize()
 (iswitchb-mode t)                    ;use advanced tab switching
 (blink-cursor-mode -1)
-(tool-bar-mode -1)                   ;disable the awful toolbar
-(menu-bar-mode -1)                   ;no menu
 (scroll-bar-mode -1)
 (savehist-mode 1)                    ;save minibuffer history
 
@@ -345,7 +344,8 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector [("black" . "#8a8888") ("#EF3460" . "#F25A7D") ("#BDEF34" . "#DCF692") ("#EFC334" . "#F6DF92") ("#34BDEF" . "#92AAF6") ("#B300FF" . "#DF92F6") ("#3DD8FF" . "#5AF2CE") ("#FFFFFF" . "#FFFFFF")])
  '(ecb-options-version "2.40")
- '(send-mail-function (quote sendmail-send-it)))
+ '(send-mail-function (quote sendmail-send-it))
+ '(tool-bar-position (quote bottom)))
  ;; '(session-use-package t nil (session)))
 
 ;; ** system specific settings
@@ -664,6 +664,36 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;       erc-password "user:pw"
 ;;       )
 
+;; ** evil
+(setq evil-default-cursor t)
+(evil-mode 1)
+(define-key evil-normal-state-map (kbd "DEL") 'backward-delete-char-untabify)
+(define-key evil-normal-state-map (kbd "9") 'end-of-line)
+(define-key evil-normal-state-map (kbd "8") 'undo-tree-redo)
+(define-key evil-normal-state-map (kbd "y") 'evil-yank-line)
+(define-key evil-normal-state-map (kbd "SPC") 'evil-visual-char)
+(define-key evil-normal-state-map (kbd "'") 'kill-whole-line)
+(define-key evil-normal-state-map (kbd "n") 'evil-scroll-page-down)
+(define-key evil-normal-state-map (kbd "m") 'evil-scroll-page-up)
+(define-key evil-normal-state-map (kbd "RET") 'evil-open-above)
+(define-key evil-normal-state-map (kbd ";") 'evil-delete-char)
+(define-key evil-normal-state-map (kbd ".") 'evil-forward-WORD-begin)
+(define-key evil-normal-state-map (kbd ",") 'evil-backward-WORD-begin)
+(define-key evil-normal-state-map (kbd "7") 'evil-replace)
+
+(define-key evil-visual-state-map (kbd "SPC") 'evil-yank)
+(define-key evil-visual-state-map (kbd "k") 'evil-delete)
+
+;; https://github.com/antono/emacs.d/blob/master/local/my-evil.el
+(eval-after-load 'mu4e
+  '(progn
+     ;; use the standard bindings as a base
+     (evil-make-overriding-map mu4e-view-mode-map 'normal t)
+     (evil-make-overriding-map mu4e-main-mode-map 'normal t)
+     (evil-make-overriding-map mu4e-headers-mode-map 'normal t)
+    ))
+
+
 ;; ** expand-region
 (global-set-key (kbd "C-8") 'er/expand-region)
 (global-set-key (kbd "M-8") 'er/contract-region)
@@ -701,13 +731,12 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** helm
 (require 'helm-config)
 (setq enable-recursive-minibuffers t)
-(helm-mode 1)
 (helm-gtags-mode 1)
 (setq helm-idle-delay 0.1)
 (setq helm-input-idle-delay 0.1)
 (setq helm-buffer-max-length 50)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(define-key my-keys-minor-mode-map (kbd "<C-tab>") 'helm-mini)
+(define-key my-keys-minor-mode-map (kbd "<f10>") 'helm-mini)
 (global-set-key (kbd "<C-f7>") 'helm-mini) ; for the terminal
 (global-set-key (kbd "<C-S-iso-lefttab>") 'helm-for-files)
 (global-set-key (kbd "C-x f") 'helm-find-files)
@@ -745,7 +774,7 @@ Dmitriy Igrishin's patched version of comint.el."
       ido-default-buffer-method 'selected-window
       ido-max-prospects 32
       )
-(ido-mode 1)
+(ido-mode 0)
 
 ;; ** iedit
 (require 'iedit)
