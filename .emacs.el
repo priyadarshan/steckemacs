@@ -625,13 +625,13 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** erc mode
 (add-hook 'erc-mode-hook (lambda ()
                            (erc-truncate-mode t)
+                           (erc-fill-disable)
                            (set (make-local-variable 'scroll-conservatively) 1000)
                            )
           )
 (setq erc-timestamp-format "%H:%M "
       erc-fill-prefix "      "
       erc-insert-timestamp-function 'erc-insert-timestamp-left)
-(setq erc-modules (delq 'fill erc-modules))
 (setq erc-interpret-mirc-color t)
 (setq erc-kill-buffer-on-part t)
 (setq erc-kill-queries-on-quit t)
