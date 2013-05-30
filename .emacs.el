@@ -199,6 +199,9 @@
 
 ;; * key bindings (mode specific bindings are defined further below with the modes)
 
+;; ** my keymap to override problematic bindings
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+
 ;; ** key-chord
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay 0.03)
@@ -280,9 +283,6 @@
 (key-chord-define-global "vg" 'vc-git-grep)
 (key-chord-define-global "fg" 'grep-find)
 (global-set-key (kbd "C-c o") 'occur) ;list matching regexp
-
-;; ** my keymap to override problematic bindings
-(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 
 ;; * general options
 
@@ -707,7 +707,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq helm-input-idle-delay 0.1)
 (setq helm-buffer-max-length 50)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(define-key my-keys-minor-mode-map (kbd "<C-tab>") 'helm-mini)
+(define-key my-keys-minor-mode-map (kbd "<C-return>") 'helm-mini)
 (global-set-key (kbd "<C-f7>") 'helm-mini) ; for the terminal
 (global-set-key (kbd "<C-S-iso-lefttab>") 'helm-for-files)
 (global-set-key (kbd "C-x f") 'helm-find-files)

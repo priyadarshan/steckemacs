@@ -39,12 +39,11 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `C-S-l`   | list available packages
                            | `C-h C-f` | go to the definition of the function under cursor
                            | `C-h C-v` | go to the definition of the variable under cursor
-                           | `f1`      | show interaction log (detailed lists of all the executed commands)
 **Appearance**             | `C-c m`   | show/hide menu
                            | `C--`     | decrease the font size
                            | `C-=`     | increase the font size
                            | `ln`      | show/hide the line numbers
-**Buffers / Files**        | `C-tab`   | buffer switcher (helm-mini)
+**Buffers / Files**        | `C-return`| buffer switcher (helm-mini)
                            | `F6`      | delete the current buffer
                            | `F8`      | switch to the "last" buffer
                            | `C-c r`   | revert a buffer to the saved state
@@ -88,7 +87,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `C-c C-e` | evaluate s-expression (with visual feedback)
 **Completion**             | `C-7`     | Trigger auto-completion explicitly (with fuzzy matching)
 **Formatting**             | `C-c w`   | cleanup whitespace
-                           | `C-c j`   | join two lines
+                           | `C-c j`   | join two lines (also mapped to M-^ by default)
                            | `ac`      | align expressions, e.g. align all `=` in 3 lines with assignments
 **Search / Replace**       | `34`      | find definitions (functions, headings etc.) in current file
                            | `gt`      | google selection / word under cursor (in web browser)
