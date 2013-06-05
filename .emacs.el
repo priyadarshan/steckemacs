@@ -267,16 +267,23 @@
 (key-chord-define-global "aj" (lambda ()  (interactive) (end-of-line) (set-mark (line-beginning-position))))
 (key-chord-define-global "wa" 'backward-word)
 (key-chord-define-global "i9" 'electric-indent-mode)
+
+;; editing
 (global-set-key (kbd "M-W" ) 'delete-region)  ;delete region (but don't put it into kill ring)
+(key-chord-define-global "wd" 'kill-word)
+(key-chord-define-global "wr" 'kill-whole-line)
+(global-set-key (kbd "C-c j") 'join-line)
+(global-set-key (kbd "<C-backspace>") (lambda ()
+                                      (interactive)
+                                      (let ((beg (point)))
+                                        (backward-word)
+                                      (delete-region beg (point)))))
 
 ;; ** formatting
 (global-set-key (kbd "C-c w") 'whitespace-cleanup)     ;cleanup whitespaces
 (global-set-key (kbd "C-c i") (lambda () (interactive) ;indent the whole the buffer
                           (indent-region (point-min) (point-max))))
-(global-set-key (kbd "C-c j") 'join-line)
 (key-chord-define-global "ac" 'align-current)
-(key-chord-define-global "wd" 'kill-word)
-(key-chord-define-global "wr" 'kill-whole-line)
 (global-set-key (kbd "C-c q") 'auto-fill-mode) ;toggles word wrap
 
 ;; ** searching / grepping
@@ -775,6 +782,8 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** magit
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c l") 'magit-log)
+(key-chord-define-global "bm" 'magit-blame-mode)
+
 (setq magit-commit-all-when-nothing-staged t)
 
 ;; ** markdown
