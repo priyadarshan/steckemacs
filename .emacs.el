@@ -86,6 +86,9 @@
         (:name eval-sexp-fu
                :type http
                :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
+        (:name magit-inotify
+               :type http
+               :url "https://raw.github.com/magit/magit/master/contrib/magit-inotify.el")
         ))
 
 (setq my-el-get-packages
@@ -599,8 +602,8 @@ Dmitriy Igrishin's patched version of comint.el."
                 (diff-hl-update))
             (buffer-read-only nil)))
         (buffer-list)))
-(defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
-  (progn (diff-hl-update-each-buffer)))
+;; (defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
+;;   (progn (diff-hl-update-each-buffer)))
 
 ;; ** dired+
 (toggle-diredp-find-file-reuse-dir 1)
@@ -785,6 +788,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (key-chord-define-global "bm" 'magit-blame-mode)
 
 (setq magit-commit-all-when-nothing-staged t)
+(add-hook 'magit-status-mode-hook 'magit-inotify-mode)
 
 ;; ** markdown
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
