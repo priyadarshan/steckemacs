@@ -423,10 +423,14 @@ Call a second time to restore the original window configuration."
 
 (global-set-key (kbd "<f7>") 'toggle-window-split)
 
-(defun xfce4-terminal (project-root-p)
+(defun x-terminal-emulator (project-root-p)
   "Open the terminal emulator either from the project root or
   from the location of the current file."
-  (start-process "*xfce4-terminal*" nil "xfce4-terminal"
+  (start-process "*x-terminal-emulator*" nil
+                 (replace-regexp-in-string
+                  ".*('\\|'.*\\|\n" ""
+                  (shell-command-to-string
+                   (concat "grep exec " (file-symlink-p (executable-find "x-terminal-emulator")))))
    (concat "--working-directory="
            (file-truename
             (if project-root-p (projectile-project-root)
@@ -435,8 +439,8 @@ Call a second time to restore the original window configuration."
    )
   )
 
-(global-set-key (kbd "C-c t") (lambda () (interactive) (xfce4-terminal nil)))
-(global-set-key (kbd "C-c T") (lambda () (interactive) (xfce4-terminal t)))
+(global-set-key (kbd "C-c t") (lambda () (interactive) (x-terminal-emulator nil)))
+(global-set-key (kbd "C-c T") (lambda () (interactive) (x-terminal-emulator t)))
 
 (when (executable-find "autojump")
   (defun ido-autojump (&optional query)
