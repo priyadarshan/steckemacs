@@ -869,19 +869,24 @@ Dmitriy Igrishin's patched version of comint.el."
                                   (delete-other-windows)
                                   (current-buffer)
                                   ))
-  ))
+    ))
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
 (setq
-  appt-display-mode-line t     ; show in the modeline
-  appt-display-format 'window)
+ appt-display-mode-line t     ; show in the modeline
+ appt-display-format 'window)
 (appt-activate 1)              ; activate appt (appointment notification)
 (org-agenda-to-appt)           ; add appointments on startup
 ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
-(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)
+            (local-set-key "\C-cd" 'org-toodledo-mark-task-deleted)
+            (local-set-key "\C-cs" 'org-toodledo-sync)
+            ))
 (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
-    (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
-)
+                                   (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
+      )
 ;; add state to the sorting strategy of todo
 (setcdr (assq 'todo org-agenda-sorting-strategy) '(priority-down todo-state-up category-keep))
 ;; define todo states: set time stamps one waiting, delegated and done
