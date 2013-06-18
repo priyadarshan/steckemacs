@@ -888,7 +888,7 @@ Dmitriy Igrishin's patched version of comint.el."
                                    (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
       )
 ;; add state to the sorting strategy of todo
-(setcdr (assq 'todo org-agenda-sorting-strategy) '(priority-down todo-state-up category-keep))
+(setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
 ;; define todo states: set time stamps one waiting, delegated and done
 (setq org-todo-keywords
       '((sequence
