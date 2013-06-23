@@ -100,105 +100,84 @@
 
 ;; * package.el
 
-(when (fboundp 'package-initialize)
-  (when (require 'cl nil t)
+(package-initialize)
 
-    (package-initialize)
+(setq package-archives '((     "elpa" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         (    "melpa" . "http://melpa.milkbox.net/packages/")))
 
-    (setq package-archives '((     "elpa" . "http://elpa.gnu.org/packages/")
-                             ("marmalade" . "http://marmalade-repo.org/packages/")
-                             (    "melpa" . "http://melpa.milkbox.net/packages/")))
+(setq my-packages
 
-    ;; required because of a package.el bug
-    (setq url-http-attempt-keepalives nil)
+      '(ack-and-a-half
+        ac-nrepl
+        ac-slime
+        ag
+        auto-complete
+        back-button
+        buffer-move
+        creole-mode
+        clojure-mode
+        diff-hl
+        dired+
+        erc-hl-nicks
+        expand-region
+        fic-ext-mode
+        flex-isearch
+        flycheck
+        geben
+        gist
+        google-this
+        grandshell-theme
+        haskell-mode
+        hackernews
+        highlight
+        helm
+        helm-descbinds
+        helm-c-yasnippet
+        helm-gtags
+        helm-git
+        helm-projectile
+        highlight-symbol
+        iedit
+        isearch+
+        jinja2-mode
+        js2-mode
+        json-mode
+        key-chord
+        magit
+        markdown-mode+
+        mmm-mode
+        mo-git-blame
+        multi-web-mode
+        multiple-cursors
+        nav
+        nrepl
+        nrepl-eval-sexp-fu
+        org
+        outline-magic
+        outlined-elisp-mode
+        paredit
+        php-eldoc
+        php-mode
+        popup
+        pos-tip
+        rainbow-mode
+        robe
+        restclient
+        slime-js
+        smartparens
+        visual-regexp
+        volatile-highlights
+        yaml-mode
+        yari
+        yasnippet)
+      )
 
-    (setq elpa-packages
+(package-refresh-contents)
 
-          '(ack-and-a-half
-            ac-nrepl
-            ac-slime
-            ag
-            auto-complete
-            back-button
-            buffer-move
-            creole-mode
-            clojure-mode
-            diff-hl
-            dired+
-            erc-hl-nicks
-            expand-region
-            fic-ext-mode
-            flex-isearch
-            flycheck
-            geben
-            gist
-            google-this
-            grandshell-theme
-            haskell-mode
-            hackernews
-            highlight
-            helm
-            helm-descbinds
-            helm-c-yasnippet
-            helm-gtags
-            helm-git
-            helm-projectile
-            highlight-symbol
-            iedit
-            isearch+
-            jinja2-mode
-            js2-mode
-            json-mode
-            key-chord
-            magit
-            markdown-mode+
-            mmm-mode
-            mo-git-blame
-            multi-web-mode
-            multiple-cursors
-            nav
-            nrepl
-            nrepl-eval-sexp-fu
-            org
-            outline-magic
-            outlined-elisp-mode
-            paredit
-            php-eldoc
-            php-mode
-            popup
-            pos-tip
-            rainbow-mode
-            robe
-            restclient
-            slime-js
-            smartparens
-            visual-regexp
-            volatile-highlights
-            yaml-mode
-            yari
-            yasnippet)
-          )
-
-    (defun elpa-packages-installed-p ()
-      (loop for p in elpa-packages
-            when (not (package-installed-p p)) do (return nil)
-            finally (return t)))
-
-    (defun elpa-install-packages ()
-      (unless (elpa-packages-installed-p)
-        ;; check for new packages (package versions)
-        (message "%s" "Emacs ELPA is now refreshing its package database...")
-        (package-refresh-contents)
-        (message "%s" " done.")
-        ;; install the missing packages
-        (dolist (p elpa-packages)
-          (unless (package-installed-p p)
-            (package-install p)))))
-
-    (elpa-install-packages)
-    )
-
-  )
+(mapcar 'package-install
+        (loop for p in my-packages
+              unless (package-installed-p p) collect p))
 
 ;; * key bindings (mode specific bindings are defined further below with the modes)
 
@@ -848,7 +827,8 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** nrepl
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
 (setq nrepl-popup-stacktraces nil)
-(setq nrepl-popup-stacktraces-in-repl t)
+(setq nrepl-popup-stacktraces-in-repl nil)
+(setq nrepl-hide-special-buffers t)
 
 (require 'ac-nrepl)
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
