@@ -905,6 +905,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (define-key cm-map "b" 'outline-backward-same-level)       ; Backward - same level
 (define-key cm-map "\C-t" 'outline-cycle)
 (global-set-key "\C-t" cm-map)
+(setq outlined-elisp-startup-folded nil)
 (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
 (add-hook 'outline-minor-mode-hook (lambda () (require 'outline-magic)))
 
