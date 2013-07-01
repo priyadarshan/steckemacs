@@ -402,15 +402,15 @@ Call a second time to restore the original window configuration."
 
 (global-set-key (kbd "<f7>") 'toggle-window-split)
 
-(defun x-terminal-emulator (project-root-p)
+(defvar stk/terminal '("gnome-terminal" . "--working-directory=" )
+  "Terminal executable and after the dot the working directory option for the terminal"
+  )
+
+(defun stk/open-terminal (project-root-p)
   "Open the terminal emulator either from the project root or
   from the location of the current file."
-  (start-process "*x-terminal-emulator*" nil
-                 (replace-regexp-in-string
-                  ".*('\\|'.*\\|\n" ""
-                  (shell-command-to-string
-                   (concat "grep exec " (file-symlink-p (executable-find "x-terminal-emulator")))))
-   (concat "--working-directory="
+  (start-process "*stk/terminal*" nil (car stk/terminal)
+   (concat (cdr stk/terminal)
            (file-truename
             (if project-root-p (projectile-project-root)
               (file-name-directory (or dired-directory load-file-name buffer-file-name)))
@@ -418,8 +418,8 @@ Call a second time to restore the original window configuration."
    )
   )
 
-(global-set-key (kbd "C-c t") (lambda () (interactive) (x-terminal-emulator nil)))
-(global-set-key (kbd "C-c T") (lambda () (interactive) (x-terminal-emulator t)))
+(global-set-key (kbd "C-c t") (lambda () (interactive) (stk/open-terminal nil)))
+(global-set-key (kbd "C-c T") (lambda () (interactive) (stk/open-terminal t)))
 
 (when (executable-find "autojump")
   (defun ido-autojump (&optional query)
