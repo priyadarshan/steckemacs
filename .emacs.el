@@ -154,6 +154,7 @@
         nrepl
         nrepl-eval-sexp-fu
         org
+        org-reveal
         outline-magic
         outlined-elisp-mode
         paredit
@@ -568,12 +569,13 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** conf-mode
 (add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
 (add-to-list 'ac-modes 'conf-mode)
+
 ;; ** deft
 (setq
  deft-extension "org"
- deft-directory "~/"
- deft-auto-save-interval 0
+ deft-directory "~/org/deft"
  deft-text-mode 'org-mode)
+(global-set-key (kbd "C-c c") 'deft)
 
 ;; ** diff-hl
 (global-diff-hl-mode 1)
@@ -851,7 +853,13 @@ Dmitriy Igrishin's patched version of comint.el."
                                   ))
     ))
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
+(setq org-agenda-files
+      (delq nil
+            (mapcar
+             (lambda (file)
+               (if (file-exists-p file) file))
+             (file-expand-wildcards "~/org/*.org"))))
+
 (setq
  appt-display-mode-line t     ; show in the modeline
  appt-display-format 'window)
@@ -883,6 +891,10 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (global-set-key (kbd "C-c A") 'org-agenda)
 (global-set-key (kbd "C-c a") (lambda () (interactive) (org-agenda nil "n")))
+
+;; ** org-reveal
+(load "org-reveal")
+(define-key org-mode-map (kbd "C-c C-v") 'org-reveal-export-to-html)
 
 ;; ** outline-mode
 (require 'outlined-elisp-mode)
@@ -1032,10 +1044,10 @@ Dmitriy Igrishin's patched version of comint.el."
 (smartparens-global-mode t)
 (define-key sp-keymap (kbd "M-o") 'sp-backward-sexp)
 (define-key sp-keymap (kbd "M-i") 'sp-forward-sexp)
-(define-key sp-keymap (kbd "C-{") 'sp-select-previous-thing-exchange)
-(define-key sp-keymap (kbd "C-}") 'sp-select-next-thing-exchange)
-(define-key sp-keymap (kbd "C-\\") 'sp-select-previous-thing)
-(define-key sp-keymap (kbd "C-]") 'sp-select-next-thing)
+(define-key sp-keymap (kbd "C-{") 'sp-select-previous-thing)
+(define-key sp-keymap (kbd "C-}") 'sp-select-next-thing)
+(define-key sp-keymap (kbd "C-\\") 'sp-select-previous-thing-exchange)
+(define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
 ;; "fix"" highlight issue in scratch buffer
 (custom-set-faces '(sp-pair-overlay-face ((t ()))))
 
