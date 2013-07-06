@@ -674,6 +674,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'php-mode-hook 'flycheck-mode)
 (add-hook 'sh-mode-hook 'flycheck-mode)
 (add-hook 'json-mode-hook 'flycheck-mode)
+(add-hook 'nxml-mode-hook 'flycheck-mode)
 (key-chord-define-global "fc" 'flycheck-mode)
 
 ;; ** flyspell-mode
@@ -925,6 +926,8 @@ Dmitriy Igrishin's patched version of comint.el."
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
 (setq php-mode-coding-style "Symfony2")
+(setq php-template-compatibility nil)
+
 (let ((manual "/usr/share/doc/php-doc/html/"))
   (when (file-readable-p manual)
     (setq php-manual-path manual)))
@@ -992,7 +995,6 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** projectile
 ;(projectile-global-mode)
 (require 'projectile nil t)
-;(setq projectile-enable-caching t)
 (key-chord-define-global "fr" 'projectile-find-file)
 (key-chord-define-global "rg" 'projectile-grep)
 (key-chord-define-global "ok" 'projectile-multi-occur)
