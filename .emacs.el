@@ -173,11 +173,17 @@
         yasnippet)
       )
 
-(package-refresh-contents)
-
-(mapcar 'package-install
-        (loop for p in my-packages
-              unless (package-installed-p p) collect p))
+(unless (condition-case nil
+            (delete-process
+             (make-network-process
+              :name "stk/check-internet"
+              :host "elpa.gnu.org"
+              :service 80))
+          (error t))
+  (package-refresh-contents)
+  (mapcar 'package-install
+          (loop for p in my-packages
+                unless (package-installed-p p) collect p)))
 
 ;; * key bindings (mode specific bindings are defined further below with the modes)
 
