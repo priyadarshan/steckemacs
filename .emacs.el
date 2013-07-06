@@ -593,8 +593,8 @@ Dmitriy Igrishin's patched version of comint.el."
                 (diff-hl-update))
             (buffer-read-only nil)))
         (buffer-list)))
-;; (defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
-;;   (progn (diff-hl-update-each-buffer)))
+(defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
+  (progn (diff-hl-update-each-buffer)))
 
 ;; ** dired+
 (toggle-diredp-find-file-reuse-dir 1)
