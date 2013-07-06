@@ -155,7 +155,6 @@
         nrepl-eval-sexp-fu
         org
         org-reveal
-        outline-magic
         outlined-elisp-mode
         paredit
         php-eldoc
@@ -345,12 +344,19 @@
   (setq x-select-enable-clipboard t)                           ;enable copy/paste from emacs to other apps
   )
 
-;; * theme / colors
+;; * theme, faces, frame
 
 (load-theme 'grandshell t)
 
 (custom-set-faces
  '(default ((t (:background "black" :foreground "#babdb6" :family "Bitstream Vera Sans Mono" :height 89)))))
+
+;; more useful frame title, that show either a file or a
+;; buffer name (if the buffer isn't visiting a file)
+(setq frame-title-format
+      '("" invocation-name " "(:eval (if (buffer-file-name)
+                                      (abbreviate-file-name (buffer-file-name))
+                                    "%b"))))
 
 ;; * custom functions
 
@@ -919,11 +925,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (define-key cm-map "p" 'outline-previous-visible-heading)  ; Previous
 (define-key cm-map "f" 'outline-forward-same-level)        ; Forward - same level
 (define-key cm-map "b" 'outline-backward-same-level)       ; Backward - same level
-(define-key cm-map "\C-t" 'outline-cycle)
 (global-set-key "\C-t" cm-map)
 (setq outlined-elisp-startup-folded nil)
 (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
-(add-hook 'outline-minor-mode-hook (lambda () (require 'outline-magic)))
 
 ;; ** php-mode
 (require 'php-mode)
