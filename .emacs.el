@@ -680,6 +680,9 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** flyspell-mode
 (global-set-key (kbd "C-c f")  'flyspell-mode)
 
+;; ** fringe
+(setq indicate-buffer-boundaries 'left)
+
 ;; ** google-this
 (google-this-mode 1)
 (key-chord-define-global "gt" 'google-this)
