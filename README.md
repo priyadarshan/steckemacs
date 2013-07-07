@@ -116,7 +116,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 
 ## Contributions
 
-I'm using **outline-mode** to keep `emacs.el` organized. There's a key map defined with the prefix `C-t`. When you open up `emacs.el` it will fold everything and only show the top level headings. Top level headings have one star:
+I'm using **outline-mode** to keep `emacs.el` organized. There's a key map defined with the prefix `C-t`. Top level headings have one star:
 
 ```lisp
 ;; * Top Level Heading
@@ -128,7 +128,7 @@ And so on:
 ;; ** Second Level Heading
 ```
 
-You can use `C-t C-t` to show and hide parts of the document. Additionally there are these commands defined:
+These commands are defined:
 
 |  combo  | description
 | --------|-------------------------------------------------
