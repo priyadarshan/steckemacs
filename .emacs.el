@@ -278,6 +278,7 @@
 (key-chord-define-global "vg" 'vc-git-grep)
 (key-chord-define-global "fg" 'grep-find)
 (global-set-key (kbd "C-c o") 'occur) ;list matching regexp
+(global-set-key (kbd "M-6") 'find-tag-other-window)
 
 ;; * general options
 
@@ -722,9 +723,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (global-set-key (kbd "<C-f7>") 'helm-mini) ; for the terminal
 (global-set-key (kbd "<C-S-iso-lefttab>") 'helm-for-files)
 (global-set-key (kbd "C-x f") 'helm-find-files)
-;(global-set-key (kbd "M-3") 'helm-etags-select)
-(global-set-key (kbd "M-5") 'helm-gtags-select)
+(global-set-key (kbd "M-5") 'helm-etags-select)
 (global-set-key (kbd "M-7") 'helm-show-kill-ring)
+(global-set-key (kbd "C-5") 'helm-all-mark-rings)
 (global-set-key (kbd "M-9") 'helm-occur)
 (global-set-key (kbd "M--") 'helm-resume)
 (global-set-key (kbd "C-S-h") 'helm-descbinds)

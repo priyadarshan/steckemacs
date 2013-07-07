@@ -68,10 +68,10 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `,.`      | Delete the current frame
 **Movement / Selections**  | `M-i`     | move to next expression
                            | `M-o`     | move to previous expression
-                           | `C-\`     | select previous "thing"
-                           | `C-]`     | select next "thing"
-                           | `C-{`     | select/exchange previous "thing"
-                           | `C-}`     | select/exchange next "thing"
+                           | `C-{`     | select previous "thing"
+                           | `C-}`     | select next "thing"
+                           | `C-\`     | select/exchange previous "thing"
+                           | `C-]`     | select/exchange next "thing"
                            | `C-3`     | go to last automatically saved position
                            | `C-4`     | go to next automatically saved  position
                            | `M-2`     | show all symbols like the one cursor is located at
@@ -93,7 +93,12 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `gt`      | google selection / word under cursor (in web browser)
                            | `gs`      | google (prompt and search in web browser)
                            | `vr`      | search/replace with visual regexp
+                           | `lo`      | locate (helm)
+                           | `34`      | imenu (helm)
+                           | `M-9`     | occur (helm)
                            | `C-;`     | edit occurences of current word on the fly, press again to exit
+**Rings**                  | `M-7`     | show kill ring (helm)
+                           | `C-5`     | show all mark rings (helm)
 **Project related**        | `fr`      | find files in current project
                            | `rg`      | grep through current project
                            | `ok`      | show occurrences of a string in current project
@@ -101,6 +106,9 @@ I only describe my custom key combinations currently. To learn the standard Emac
                            | `ag`      | ag through current project
                            | `C-c g`   | magit status - manual: http://magit.github.io/magit/
                            | `C-c l`   | magit log
+**Tags**                   | `M-.`     | find tag
+                           | `M-5`     | select etag (helm)
+                           | `M-6`     | find tag in other window
 **Code/Spell checking**    | `cf`      | toggle code checking (flycheck)
                            | `C-c f`   | toggle spell checking (flyspell)
                            | `C-c d`   | change dictionary
