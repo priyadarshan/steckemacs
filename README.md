@@ -32,89 +32,89 @@ I only describe my custom key combinations currently. To learn the standard Emac
 
 **the list is not complete yet, work ingress**
 
-     Topic                 |   Combo   | Description
----------------------------|-----------|----------------------------------------------------------------------
-**General**                | `C-c X`   | kill emacs (including the daemon if it is running)
-                           | `C-S-h`   | show current keyboard shortcuts, allows search too
-                           | `C-S-l`   | list available packages
-                           | `C-h C-f` | go to the definition of the function under cursor
-                           | `C-h C-v` | go to the definition of the variable under cursor
-**Appearance**             | `C-c m`   | show/hide menu
-                           | `C--`     | decrease the font size
-                           | `C-=`     | increase the font size
-                           | `ln`      | show/hide the line numbers
-**Buffers / Files**        | `C-return`| buffer switcher (helm-mini)
-                           | `F6`      | delete the current buffer
-                           | `F8`      | switch to the "last" buffer
-                           | `C-c r`   | revert a buffer to the saved state
-                           | `sc`      | switch to \*scratch\* buffer
-                           | `C-c n`   | copy the full path of the current file to the clipboard
-**Windows / Frames**       | `C-0`     | previous window
-                           | `C-9`     | next window
-                           | `F2`      | split window vertically
-                           | `F3`      | split window horizontally
-                           | `F4`      | delete current window (not the buffer)
-                           | `F5`      | only keep the current window and delete all others
-                           | `F7`      | switch arrangement of two windows horizontally/vertically
-                           | `F9`      | split window and show last buffer, another press hides that window again
-                           | `C-left`  | shrink window
-                           | `C-right` | enlarge window
-                           | `C-up`    | shrink window horizontally
-                           | `C-down`  | enlarge window horizontally
-                           | `M-up`    | move buffer to window above
-                           | `M-down`  | move buffer to window below
-                           | `M-left`  | move buffer to left window
-                           | `M-right` | move buffer to right window
-                           | `,.`      | Delete the current frame
-**Movement / Selections**  | `M-i`     | move to next expression
-                           | `M-o`     | move to previous expression
-                           | `C-{`     | select previous "thing"
-                           | `C-}`     | select next "thing"
-                           | `C-\`     | select/exchange previous "thing"
-                           | `C-]`     | select/exchange next "thing"
-                           | `C-3`     | go to last automatically saved position
-                           | `C-4`     | go to next automatically saved  position
-                           | `M-2`     | show all symbols like the one cursor is located at
-                           | `M-3`     | previous symbol like the one the cursor is on
-                           | `M-4`     | next symbol like the one the cursor is on
-                           | `i9`      | toggle automatic identation
-                           | `C-8`     | select symbol under cursor, pressing again will smartly expand the region
-                           | `M-8`     | narrow the selection again
-                           | `C->`     | add cursor downwards (try to get next occurrence if sth. is marked)
-                           | `C-<`     | add cursor upwards (try to get previous occurrence if sth. is marked)
-**Elisp Evaluation**       | `90`      | evaluate list (with visual feedback)
-                           | `C-c C-c` | "
-                           | `C-c C-e` | evaluate s-expression (with visual feedback)
-**Completion**             | `C-7`     | Trigger auto-completion explicitly (with fuzzy matching)
-**Formatting**             | `C-c w`   | cleanup whitespace
-                           | `C-c j`   | join two lines (also mapped to M-^ by default)
-                           | `ac`      | align expressions, e.g. align all `=` in 3 lines with assignments
-**Search / Replace**       | `34`      | find definitions (functions, headings etc.) in current file
-                           | `gt`      | google selection / word under cursor (in web browser)
-                           | `gs`      | google (prompt and search in web browser)
-                           | `vr`      | search/replace with visual regexp
-                           | `lo`      | locate (helm)
-                           | `34`      | imenu (helm)
-                           | `M-9`     | occur (helm)
-                           | `C-;`     | edit occurences of current word on the fly, press again to exit
-**Rings**                  | `M-7`     | show kill ring (helm)
-                           | `C-5`     | show all mark rings (helm)
-**Project related**        | `fr`      | find files in current project
-                           | `rg`      | grep through current project
-                           | `ok`      | show occurrences of a string in current project
-                           | `aw`      | ack through current project
-                           | `ag`      | ag through current project
-                           | `C-c g`   | magit status - manual: http://magit.github.io/magit/
-                           | `C-c l`   | magit log
-**Tags**                   | `M-.`     | find tag
-                           | `M-5`     | select etag (helm)
-                           | `M-6`     | find tag in other window
-**Code/Spell checking**    | `cf`      | toggle code checking (flycheck)
-                           | `C-c f`   | toggle spell checking (flyspell)
-                           | `C-c d`   | change dictionary
-**Shell**                  | `C-c s`   | open emacs shell
-**PHP**                    | `vd`      | insert var_dump around selection
-                           | `vb`      | insert var_dump + die around selection
+|      Topic                 |   Combo   | Description
+|----------------------------|-----------|----------------------------------------------------------------------
+|                **General** | `C-c X`   | kill emacs (including the daemon if it is running)
+|                            | `C-S-h`   | show current keyboard shortcuts, allows search too
+|                            | `C-S-l`   | list available packages
+|                            | `C-h C-f` | go to the definition of the function under cursor
+|                            | `C-h C-v` | go to the definition of the variable under cursor
+|             **Appearance** | `C-c m`   | show/hide menu
+|                            | `C--`     | decrease the font size
+|                            | `C-=`     | increase the font size
+|                            | `ln`      | show/hide the line numbers
+|        **Buffers / Files** | `C-return`| buffer switcher (helm-mini)
+|                            | `F6`      | delete the current buffer
+|                            | `F8`      | switch to the "last" buffer
+|                            | `C-c r`   | revert a buffer to the saved state
+|                            | `sc`      | switch to \*scratch\* buffer
+|                            | `C-c n`   | copy the full path of the current file to the clipboard
+|       **Windows / Frames** | `C-0`     | previous window
+|                            | `C-9`     | next window
+|                            | `F2`      | split window vertically
+|                            | `F3`      | split window horizontally
+|                            | `F4`      | delete current window (not the buffer)
+|                            | `F5`      | only keep the current window and delete all others
+|                            | `F7`      | switch arrangement of two windows horizontally/vertically
+|                            | `F9`      | split window and show last buffer, another press hides that window again
+|                            | `C-left`  | shrink window
+|                            | `C-right` | enlarge window
+|                            | `C-up`    | shrink window horizontally
+|                            | `C-down`  | enlarge window horizontally
+|                            | `M-up`    | move buffer to window above
+|                            | `M-down`  | move buffer to window below
+|                            | `M-left`  | move buffer to left window
+|                            | `M-right` | move buffer to right window
+|                            | `,.`      | Delete the current frame
+|  **Movement / Selections** | `M-i`     | move to next expression
+|                            | `M-o`     | move to previous expression
+|                            | `C-{`     | select previous "thing"
+|                            | `C-}`     | select next "thing"
+|                            | `C-\`     | select/exchange previous "thing"
+|                            | `C-]`     | select/exchange next "thing"
+|                            | `C-3`     | go to last automatically saved position
+|                            | `C-4`     | go to next automatically saved  position
+|                            | `M-2`     | show all symbols like the one cursor is located at
+|                            | `M-3`     | previous symbol like the one the cursor is on
+|                            | `M-4`     | next symbol like the one the cursor is on
+|                            | `i9`      | toggle automatic identation
+|                            | `C-8`     | select symbol under cursor, pressing again will smartly expand the region
+|                            | `M-8`     | narrow the selection again
+|                            | `C->`     | add cursor downwards (try to get next occurrence if sth. is marked)
+|                            | `C-<`     | add cursor upwards (try to get previous occurrence if sth. is marked)
+|       **Elisp Evaluation** | `90`      | evaluate list (with visual feedback)
+|                            | `C-c C-c` | "
+|                            | `C-c C-e` | evaluate s-expression (with visual feedback)
+|             **Completion** | `C-7`     | Trigger auto-completion explicitly (with fuzzy matching)
+|             **Formatting** | `C-c w`   | cleanup whitespace
+|                            | `C-c j`   | join two lines (also mapped to M-^ by default)
+|                            | `ac`      | align expressions, e.g. align all `=` in 3 lines with assignments
+|       **Search / Replace** | `34`      | find definitions (functions, headings etc.) in current file
+|                            | `gt`      | google selection / word under cursor (in web browser)
+|                            | `gs`      | google (prompt and search in web browser)
+|                            | `vr`      | search/replace with visual regexp
+|                            | `lo`      | locate (helm)
+|                            | `34`      | imenu (helm)
+|                            | `M-9`     | occur (helm)
+|                            | `C-;`     | edit occurences of current word on the fly, press again to exit
+|                  **Rings** | `M-7`     | show kill ring (helm)
+|                            | `C-5`     | show all mark rings (helm)
+|        **Project related** | `fr`      | find files in current project
+|                            | `rg`      | grep through current project
+|                            | `ok`      | show occurrences of a string in current project
+|                            | `aw`      | ack through current project
+|                            | `ag`      | ag through current project
+|                            | `C-c g`   | magit status - manual: http://magit.github.io/magit/
+|                            | `C-c l`   | magit log
+|                   **Tags** | `M-.`     | find tag
+|                            | `M-5`     | select etag (helm)
+|                            | `M-6`     | find tag in other window
+|    **Code/Spell checking** | `cf`      | toggle code checking (flycheck)
+|                            | `C-c f`   | toggle spell checking (flyspell)
+|                            | `C-c d`   | change dictionary
+|                  **Shell** | `C-c s`   | open emacs shell
+|                    **PHP** | `vd`      | insert var_dump around selection
+|                            | `vb`      | insert var_dump + die around selection
 
 ## Contributions
 
@@ -132,24 +132,24 @@ And so on:
 
 You can use `C-t C-t` to show and hide parts of the document. Additionally there are these commands defined:
 
- combo  | description
---------|-------------------------------------------------
-`C-t q` | Hide everything but the top-level headings
-`C-t t` | Hide everything but headings (all body lines)
-`C-t o` | Hide other branches
-`C-t c` | Hide this entry's body
-`C-t l` | Hide body lines in this entry and sub-entries
-`C-t d` | Hide everything in this entry and sub-entries
-`C-t a` | Show (expand) everything
-`C-t e` | Show this heading's body
-`C-t i` | Show this heading's immediate child sub-headings
-`C-t k` | Show all sub-headings under this heading
-`C-t s` | Show (expand) everything in this heading & below
-`C-t u` | Up
-`C-t n` | Next
-`C-t p` | Previous
-`C-t f` | Forward - same level
-`C-t b` | Backward - same level
+|  combo  | description
+| --------|-------------------------------------------------
+| `C-t q` | Hide everything but the top-level headings
+| `C-t t` | Hide everything but headings (all body lines)
+| `C-t o` | Hide other branches
+| `C-t c` | Hide this entry's body
+| `C-t l` | Hide body lines in this entry and sub-entries
+| `C-t d` | Hide everything in this entry and sub-entries
+| `C-t a` | Show (expand) everything
+| `C-t e` | Show this heading's body
+| `C-t i` | Show this heading's immediate child sub-headings
+| `C-t k` | Show all sub-headings under this heading
+| `C-t s` | Show (expand) everything in this heading & below
+| `C-t u` | Up
+| `C-t n` | Next
+| `C-t p` | Previous
+| `C-t f` | Forward - same level
+| `C-t b` | Backward - same level
 
 So... that's what should make it easier to keep an overview. If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
 
